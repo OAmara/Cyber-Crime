@@ -9,24 +9,30 @@ body {
 	height: 700px;
 	border-width: 3px;
 	margin: auto;
+	overflow: scroll;
+	/*overflow: overlay;*/
 }
 
+/*user score displayed on top of main div*/
 .app-users {
 	display:;
 	margin: 0 auto;
 }
 
+/*hidden loop generated div boxes*/
 .hiddenDiv {
 	width: 10px;
 	height: 10px;
 	background-color: blue;
 	display: inline-block;
-	margin: 5% 20%;
+	margin: 3% 3%;
 }
 
 /*This selector will create CSS for all generated comments*/
 .comments {
 	border: 1px solid grey;
+	border-radius: 10px;
+	display: inline-block;
 }
 
 /*changed comment when clicked based on if statement when clicked*/

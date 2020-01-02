@@ -1,17 +1,22 @@
 console.log(`--Cyber Crime--`);
 
 // Order/ GOALs:
-	// create multiple hiddne divs within main divs (think hw10 or pokasquare)
+	// create multiple hidden divs within main divs (think hw10 or pokasquare)
 	// Create test comment to appendTo random hidden div. within main div.
 	// test clicks
 
 
 
 // Class
-class Comment{
-	constructor(user, string) {
-		this.user = game.reportUser[0]
-		this.string = game.comments[0].string
+class Comment {
+	constructor(/*, user, string*/) {
+
+		//bad or good  randomly assign
+
+
+		// this.user = 	// game.reportUser[0]
+		// this.string = 	// game.comments[0].string
+
 	}
 
 	revealBully() {
@@ -29,7 +34,7 @@ const game = {
 	// Random user reporting comment
 	reportUser: ['Penguin1137', 'DirtyHarry'],
 	// Comments; "bully" = true, "regular" = false
-	comments: [{
+	comments: [/*{
 		string: "Bad Negative Comment",
 		bully: true
 	}, {
@@ -38,37 +43,45 @@ const game = {
 	}, {
 		string: "world",
 		bully: false
-	}],
-	hiddenDivPosition() {
-		for(let i = 0; i <= 13; i++) {
-			$h3 = $(`<h3 class='hiddenDiv''${i}'></h3>`)
-				// `class='${i}'></h3>`)
-			$h3.appendTo($('#main'))
+	}*/],
 
-			this.generateComment()
-		}
 
-	},
-	// generates random comment and user match
-	generateComment() {
-		const randReportUser = Math.floor(Math.random * this.reportUser.length)
-		const randComment = Math.floor(Math.random * this.comments.length)
-		// Will have to find logic to 
-		const randHiddenDiv = Math.floor(Math.random * 13)
-
-		$h3 = $(`<h3 style="display: inline" class='comments'>${this.comments[0].string}<p>${this.reportUser[0]}</p></h3>`)
-		$h3.appendTo($('.hiddenDiv'))
-
+	addComment() {
+		// instantiate a Comment
+		// store in array
+		// print on screen
 	}
 
 
+	hiddenDivPosition() {
+		for(let i = 0; i <= 16; i++) {
+			$p = $(`<p class='hiddenDiv ${i}'></p>`)
+				// `class='${i}'></p>`)
+			$p.appendTo($('#main'))
+
+		}
+		this.generateComment()
+	},
+	// generates random comment and user match
+	generateComment() {
+		const randReportUser = Math.floor(Math.random() * this.reportUser.length)
+		const randComment = Math.floor(Math.random() * this.comments.length)
+		// Will have to find logic to 
+		const randHiddenDiv = Math.floor(Math.random() * 16)
+
+		$p = $(`<p class='comments'>"${this.comments[0].string}"<span style="font-size: 12px; display: block">user: ${this.reportUser[0]}</span></p>`)
+		// $p.appendTo($('.hiddenDiv'))
+		$p.insertAfter($('.hiddenDiv'))
+		// $p.insertBefore($('.hiddenDiv'))
+	}
+
 
 }
-game.hiddenDivPosition()
+// game.hiddenDivPosition()
 
 //Event Listeners
 $('#main').on('click', (e) => {
-	console.log(e.Currenttarget);
+	console.log(e.currenttarget);
 	console.log($(e.target));
 	console.log(e.target);
 	// Utilize way to change comment when clicked on. Change ID main to general comment class?
