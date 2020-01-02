@@ -1,3 +1,46 @@
 body {
-	background-color: honeydew;
+	background-color: whitesmoke;
 }
+
+#main {
+	background-color: white;
+	/*background-color: transparent;*/
+	width: 900px;
+	height: 700px;
+	border-width: 3px;
+	margin: auto;
+}
+
+.app-users {
+	display:;
+	margin: 0 auto;
+}
+
+.hiddenDiv {
+	width: 10px;
+	height: 10px;
+	background-color: blue;
+	display: inline-block;
+	margin: 5% 20%;
+}
+
+/*This selector will create CSS for all generated comments*/
+.comments {
+	border: 1px solid grey;
+}
+
+/*changed comment when clicked based on if statement when clicked*/
+.revealedTrue {
+	border: 2px solid red;
+}
+/*changed comment when clicked based on if statement when clicked*/
+.revealedFalse {
+	border: 2px solid green;
+}
+
+
+
+
+
+
+
