@@ -16,6 +16,8 @@ console.log(`--Cyber Crime--`);
 				//...since a Class should never change. 
 			// BONUS+: Each round stores previous round data into array and displays stats before resetting variables. Maybe user want to be able to go back to previous rounds?
 
+	//// NOW: New random instantiated class, then score decrement based on bully on screen
+
 
 // Class
 class Comment {
@@ -23,7 +25,8 @@ class Comment {
 		// bad or good randomly assign. 
 //		// Add/ Remove a True or False in truthy Array to alter odds of getting one over another.
 			// Additional rounds may have more true (bullys) to become progressively harder.
-		const truthy = [true, false, true]
+			// i.e. [true, false, true, true] --> 75% chance it will be true
+		const truthy = [true, false]
 		const randomTruthy = Math.floor(Math.random() * truthy.length)
 		this.bully = truthy[randomTruthy]
 
@@ -31,11 +34,11 @@ class Comment {
 		// May have to edit this portion if errors occur utilizing this.string
 		const randomBully = Math.floor(Math.random() * game.bullyStringGenerator.length)
 		const randomRegular = Math.floor(Math.random() * game.regularStringGenerator.length)
-		if(this.bully === true) {
-			this.string = game.bullyStringGenerator[randomBully].string
+		if (this.bully === true) {
+			this.string = game.bullyStringGenerator[randomBully]
 		}
 		if (this.bully === false) {
-			this.string = game.regularStringGenerator[randomRegular].string
+			this.string = game.regularStringGenerator[randomRegular]
 		}
 
 		// Random user reported comment
@@ -53,22 +56,27 @@ class Comment {
 		// alt. = changing bully color to regular when clicked and regular disappears when clicked.
 
 		//change border color, maybe even bgColor to mainly transparent red or green
-		if(this.bully === true) {
-			// MAY be better to use .classList or .className , .remove() then .addclass()
-			$thisComment.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
-			game.appUserScore += 80
-			game.scoreboard()
-
-			// border: 2px solid red;
-
-			console.log("im truthy");
-		}
 		if(this.bully === false) {
 			$thisComment.addClass('revealedFalse').hide(5000).text(`${this.user} wrote "I'm giving you a bad rating"`).css('fontSize', '0.85em')
 			game.appUserScore = Math.ceil(game.appUserScore * 0.75)
 			game.scoreboard()
 
 			console.log("im falsy");
+		}
+		if(this.bully === true) {
+			// MAY be better to use .classList or .className , .remove() then .addclass()
+			$thisComment.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
+			game.appUserScore += 80
+			game.scoreboard()
+
+			// Does not work...Will not display red
+			console.log(this.bully)
+			this.bully = false
+			console.log(this.bully)
+
+			// border: 2px solid red;
+
+			console.log("im truthy");
 		}
 
 			//i.e. if(this....bully === false) {jQuery change class name to this new class name that
@@ -85,20 +93,14 @@ const game = {
 	// Random user reporting comment
 	reportUser: ['Penguin1137', 'DirtyHenry', 'sparkles87'],
 	// Comments; "bully" = true, "regular" = false --> may not need this.
-	bullyStringGenerator: [{
-		string: "Bad Negative Comment Here",
-		bully: true
-	}, {
-		string: "You Know Nobody likes you",
-		bully: true
-	}],
-	regularStringGenerator: [{
-		string: "Hello, I am a Good Comment",
-		bully: false
-	}, {
-		string: "Good Comment here, nice to meet you",
-		bully: false
-	}],
+	bullyStringGenerator: [
+		"Bad Negative Comment Here",
+		"You Know Nobody likes you",
+		],
+	regularStringGenerator: [
+		"Hello, I am a Good Comment",
+		"Good Comment here, nice to meet you",
+		],
 	comments: [],
 	appUserScore: 1000,
 	// Just for visualization
@@ -119,11 +121,8 @@ const game = {
 		// store in array
 		this.comments.push($helloComment)
 
-		// print on screen
-		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
-		this.startTime()
-		this.scoreboard()
-		this.generateComment()
+		// this.startTime()
+		this.showComment()
 	},
 	// Click event listener method that triggers class method
 	revealTruthy($thisComment) {
@@ -132,14 +131,22 @@ const game = {
 
 	startTime() {
 		this.intervalID = setInterval(() => {
+			
 			// Will be used for logic like how frequently to display new comment...
 			this.time++
 			// console.log(this.time);
 			
 			// Have addCOmment() pass an argument to create new random instantiated comment.
+			this.appUserScore
+			if(this.time % 2 === 0 && this.appUserScore > 0) {
 				// (Random Logic Here)
-			this.addComment()
+				// let createNewComment = hi//this.comments.length
+				// this.addComment(createNewComment)
 
+				// temporary fix
+				this.comments = []
+				this.addComment()
+			}
 
 			// utilize forEach?
 			for(let i = 0; i <= this.comments.length-1; i++) {
@@ -147,27 +154,27 @@ const game = {
 //					// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
 					this.appUserScore = Math.ceil(this.appUserScore * 0.97)
-					this.appUserScore-=10
-					this.scoreboard()
+					this.appUserScore -= 10
 				}
 			}
 
 			// this.addComment() placed here when figured out how to instantiate class with new const everytime. 
 
 
-
+		this.scoreboard()
 		}, 1000)
 	},
 	scoreboard() {
 		this.appUserScore
+		this.time
 		$('.app-users').text(`Recurring Users: ${this.appUserScore}`)
-		console.log(this.appUserScore);
 		if(this.appUserScore <= 0) {
 			$('.app-users').text(`Recurring Users: 0`)
 //			// ClearInterval() goes here
 			clearInterval(this.intervalID)
 			this.gameEnd()
 		}
+		console.log(this.appUserScore);
 	},
 	gameEnd() {
 		console.log("WHAT A SHAME");
@@ -175,7 +182,7 @@ const game = {
 
 	},
 	hiddenDivPosition() {
-		for(let i = 0; i <= 20; i++) {
+		for(let i = 0; i <= 18; i++) {
 			$p = $(`<p class='hiddenDiv${i}'></p>`)
 				// `class='${i}'></p>`)
 			$p.css({
@@ -189,14 +196,16 @@ const game = {
 			$p.appendTo($('#main'))
 
 		}
-		this.addComment()
+		this.scoreboard()
+		this.startTime()
 	},
 	// generates random comment and user match
-	generateComment() {
+	showComment() {
 		// * length based on for loop above for hidden divs
-		const randHiddenDiv = Math.floor(Math.random() * 20)
+		const randHiddenDiv = Math.floor(Math.random() * 18)
 
-		$(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
+//		// For testing purposes only
+		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
 
 		$p = $(`<p class='comments'><span class="userComment">user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
 		// $p.appendTo($('.hiddenDiv'))
@@ -210,11 +219,11 @@ game.hiddenDivPosition()
 // game.addComment()
 
 ////Event Listeners
-// Previously #main, but issue with not triggering when clicking in whitespace of .comments
-$('.comments').on('click', (e) => {
+// try: #main w/ e.target try: .comments w/ e.currentTarget
+$('#main').on('click', (e) => {
 	console.log(e.currentTarget);
 	// Previously e.target
-	$thisComment = $(e.currentTarget)
+	$thisComment = $(e.target)
 	if($thisComment.hasClass('comments')) {
 		game.revealTruthy($thisComment)
 	}
