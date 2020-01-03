@@ -33,6 +33,14 @@ body {
 	border: 1px solid grey;
 	border-radius: 10px;
 	display: inline-block;
+	text-align: center;
+	padding: 0 10px;
+	width: ;
+}
+.userComment {
+	font-size: 0.85em;
+	display: block;
+	text-align: left;
 }
 
 /*changed comment when clicked based on if statement when clicked*/
@@ -41,13 +49,9 @@ body {
 }
 /*changed comment when clicked based on if statement when clicked*/
 .revealedFalse {
-	border: 2px solid green;
+	border: 2px solid lightgreen;
 }
 
-.userComment {
-	font-size: 12px;
-	display: block;
-}
 
 
 

@@ -5,15 +5,28 @@ console.log(`--Cyber Crime--`);
 	// Create test comment to appendTo random hidden div. within main div.
 	// test clicks
 
+	// NEXT: Random string added to constructor from string array. Random hidden div.
+		// if statement to determine if string is coming from bully or regular generator
 
 
 // Class
 class Comment {
-	constructor(bully) {
+	constructor(bully, string) {
 		//bad or good  randomly assign
 		const truthy = [true, false]
 		const randomTruthy = Math.floor(Math.random() * truthy.length)
 		this.bully = truthy[randomTruthy]
+
+		// Add random string from array according to truthy
+		// May have to edit this portion if errors occur utilizing this.string
+		const randomBully = Math.floor(Math.random() * game.bullyStringGenerator.length)
+		const randomRegular = Math.floor(Math.random() * game.regularStringGenerator.length)
+		if(this.bully == true) {
+			this.string = game.bullyStringGenerator[randomBully].string
+		}
+		if (this.bully == false) {
+			this.string = game.regularStringGenerator[randomRegular].string
+		}
 
 		// Add constructor for creating h2 with class comments. Then this can be accessed with revealBully?
 
@@ -22,17 +35,18 @@ class Comment {
 		// this.string = 	// this.comments[0].string
 
 	}
-	revealBully() {
+	revealBully($thisComment) {
 		//change border color, maybe even bgColor to mainly transparent red or green
 
 		if(this.bully === true) {
-			// $('comments').addClass('revealedTrue')
+			$thisComment.addClass('revealedTrue').hide(2000)
 
 			// border: 2px solid red;
 
 			console.log("im truthy");
 		}
 		if(this.bully === false) {
+			$thisComment.addClass('revealedFalse').hide(5000)
 			// $('comments').addClass('revealedFalse')
 
 			console.log("im falsy");
@@ -69,14 +83,19 @@ const game = {
 		// instantiate a Comment
 		const helloComment = new Comment()
 		console.log(helloComment);
+		console.log(this.bullyStringGenerator.length);
+
 		// store in array
 		this.comments.push(helloComment)
-		console.log(this.comments);
+
 		// print on screen
-		$(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
+		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
+
+		this.generateComment()
 	},
-	revealTruthy() {
-		this.comments[0].revealBully()
+	// Click event listener method that triggers class method
+	revealTruthy($thisComment) {
+		this.comments[0].revealBully($thisComment)
 	},
 
 	startTimer() {
@@ -96,7 +115,7 @@ const game = {
 			$p.appendTo($('#main'))
 
 		}
-		this.generateComment()
+		this.addComment()
 	},
 	// generates random comment and user match
 	generateComment() {
@@ -105,7 +124,9 @@ const game = {
 		// Will have to find logic to 
 		const randHiddenDiv = Math.floor(Math.random() * 15)
 
-		$p = $(`<p class='comments'>"${this.bullyStringGenerator[0].string}"<span class="userComment">user: ${this.reportUser[0]}</span></p>`)
+		$(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
+
+		$p = $(`<p class='comments'><span class="userComment">user: ${this.reportUser[0]}</span>"${this.bullyStringGenerator[0].string}"</p>`)
 		// $p.appendTo($('.hiddenDiv'))
 		$p.insertAfter($('.hiddenDiv8'))
 		// $p.insertBefore($('.hiddenDiv'))
@@ -114,14 +135,14 @@ const game = {
 
 }
 game.hiddenDivPosition()
-game.addComment()
+// game.addComment()
 
 //Event Listeners
 $('#main').on('click', (e) => {
 	console.log(e.currentTarget);
 	$thisComment = $(e.target)
 	if($thisComment.hasClass('comments')) {
-		game.revealTruthy()
+		game.revealTruthy($thisComment)
 	}
 	// Utilize way to change comment when clicked on. Change ID main to general comment class?
 	// if (e.currentTarget...bully === true) {
