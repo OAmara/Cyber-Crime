@@ -16,7 +16,7 @@ body {
 /*user score displayed on top of main div*/
 .app-users {
 	display:;
-	margin: auto 16%;
+	margin: auto 20%;
 }
 
 /*hidden loop generated div boxes. NOT WORKING; implemented with jQuery */
@@ -35,12 +35,15 @@ body {
 	display: inline-block;
 	text-align: center;
 	padding: 0 10px;
+	/*do not like userComment not on far left of box*/
 	width: ;
+	/*position: ;*/
 }
 .userComment {
 	font-size: 0.85em;
 	display: block;
 	text-align: left;
+	/*position: absolute;*/
 }
 
 /*changed comment when clicked based on if statement when clicked*/
