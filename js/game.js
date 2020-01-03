@@ -26,7 +26,7 @@ class Comment {
 //		// Add/ Remove a True or False in truthy Array to alter odds of getting one over another.
 			// Additional rounds may have more true (bullys) to become progressively harder.
 			// i.e. [true, false, true, true] --> 75% chance it will be true
-		const truthy = [true, false]
+		const truthy = [true, false, true]
 		const randomTruthy = Math.floor(Math.random() * truthy.length)
 		this.bully = truthy[randomTruthy]
 
@@ -68,8 +68,8 @@ class Comment {
 			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
 
 				if(game.appUserScore > 0) {
-					game.appUserScore += 95
-					game.appUserScore += Math.ceil(game.appUserScore * 0.02)
+					game.appUserScore += 142
+					game.appUserScore += Math.ceil(game.appUserScore * 0.04)
 				}
 			game.scoreboard()
 
@@ -97,10 +97,10 @@ const game = {
 	// Comments; "bully" = true, "regular" = false --> may not need this.
 	bullyStringGenerator: [
 		"Bad Negative Comment Here",
-		"You Know Nobody likes you",
+		"Bad, You Know Nobody likes you",
 		],
 	regularStringGenerator: [
-		"Hello, I am a Good Comment",
+		"Good day sir, I am a Good Comment",
 		"Good Comment here, nice to meet you",
 		],
 	comments: [],
@@ -135,14 +135,12 @@ const game = {
 			
 			// Have addCOmment() pass an argument to create new random instantiated comment.
 			this.appUserScore
-			if(this.time % 2 === 0 && this.appUserScore > 0) {
-				// (Random Logic Here)
-				// let createNewComment = hi//this.comments.length
-				// this.addComment(createNewComment)
+			if (this.appUserScore > 0) {
+				if (this.time % 2 === 0 || this.time % 5 === 0) {
 
-				// temporary fix?
-				// this.comments = []
 				this.addComment()
+				}
+
 			}
 
 			// utilize forEach?
@@ -150,14 +148,14 @@ const game = {
 				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
 //	used-->		// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
-					this.appUserScore -= Math.ceil(this.appUserScore * 0.04)
+					this.appUserScore -= Math.ceil(this.appUserScore * 0.035)
 					this.appUserScore -= 20
 				}
 			}
 
 
 			this.scoreboard()
-		}, 1000)
+		}, 900)
 	},
 	addComment() {
 		// instantiate a Comment
@@ -179,10 +177,22 @@ const game = {
 //		// For testing purposes only to view end of main div placement
 		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
 
-		// use data
-			// i.e. .data('name', this.comments.length-1)
+		// const $p = $(`<p class='comment'><span class="userComment">user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
 
-		const $p = $(`<p class='comment'><span class="userComment">user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
+
+		// const $span = $(`<span>user: ${this.comments[this.comments.length-1].user}</span>`)
+		// $span.text(`user: ${this.comments[this.comments.length-1].user}`)
+		// .css({
+		// 	fontSize: '0.85em',
+		// 	display: 'block',
+		// 	textAlign: 'left'
+		// })
+		// console.log($span);
+
+//		// FIX: span not clickable since seperate from p comment class.
+		const $p = $(`<p class='comment'><span class='userComment'>user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
+
+		$p.data('whichComment', this.comments.length-1)
 		// $p.appendTo($('.hiddenDiv'))
 		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
 		// $p.insertBefore($('.hiddenDiv'))
@@ -208,7 +218,10 @@ const game = {
 	revealTruthy($whatWasClicked) {
 
 		// get index of what was clicked from dataset -- use that instead of this.comments.length - 1
-		this.comments[this.comments.length-1].revealBully($whatWasClicked)
+		// i.e. $whatWasClicked.data('data-name-here')?
+		const dataComment = $whatWasClicked.data().whichComment
+		this.comments[dataComment].revealBully($whatWasClicked)
+		console.log(dataComment)
 
 	}
 
