@@ -5,14 +5,25 @@ console.log(`--Cyber Crime--`);
 	// Create test comment to appendTo random hidden div. within main div.
 	// test clicks
 
-	// NEXT: create game timer(currently in startTimer(), score system
+	// NEXT:  
+		// Create game time(currently in startTime(), 
+		// Score system.
+		// Be able to create multiple instantiated classes in comments array without hardcoding.
+			// Me be more easily achieved with game time set-up
+		// Rounds
+			// Each round adds true within truthy array to increase odds of bully comments.
+			// Proper way may be to extend class to change class each round...
+				//...since a Class should never change. 
+			// BONUS+: Each round stores previous round data into array and displays stats before resetting variables. Maybe user want to be able to go back to previous rounds?
 
 
 // Class
 class Comment {
 	constructor(bully, string, user) {
-		//bad or good  randomly assign
-		const truthy = [true, false]
+		// bad or good randomly assign. 
+//		// Add/ Remove a True or False in truthy Array to alter odds of getting one over another.
+			// Additional rounds may have more true (bullys) to become progressively harder.
+		const truthy = [true, false, true]
 		const randomTruthy = Math.floor(Math.random() * truthy.length)
 		this.bully = truthy[randomTruthy]
 
@@ -20,10 +31,10 @@ class Comment {
 		// May have to edit this portion if errors occur utilizing this.string
 		const randomBully = Math.floor(Math.random() * game.bullyStringGenerator.length)
 		const randomRegular = Math.floor(Math.random() * game.regularStringGenerator.length)
-		if(this.bully == true) {
+		if(this.bully === true) {
 			this.string = game.bullyStringGenerator[randomBully].string
 		}
-		if (this.bully == false) {
+		if (this.bully === false) {
 			this.string = game.regularStringGenerator[randomRegular].string
 		}
 
@@ -39,9 +50,11 @@ class Comment {
 
 	}
 	revealBully($thisComment) {
-		//change border color, maybe even bgColor to mainly transparent red or green
+		// alt. = changing bully color to regular when clicked and regular disappears when clicked.
 
+		//change border color, maybe even bgColor to mainly transparent red or green
 		if(this.bully === true) {
+			// MAY be better to use .classList or .className , .remove() then .addclass()
 			$thisComment.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
 			game.appUserScore += 80
 			game.scoreboard()
@@ -57,7 +70,6 @@ class Comment {
 
 			console.log("im falsy");
 		}
-		console.log("it works!");
 
 			//i.e. if(this....bully === false) {jQuery change class name to this new class name that
 				// changes color turn comment green}
@@ -68,7 +80,7 @@ class Comment {
 
 }
 
-// Game
+//// Game
 const game = {
 	// Random user reporting comment
 	reportUser: ['Penguin1137', 'DirtyHenry', 'sparkles87'],
@@ -89,34 +101,78 @@ const game = {
 	}],
 	comments: [],
 	appUserScore: 1000,
+	// Just for visualization
+	time: 0,
+	intervalID: 0,
 	addComment() {
+//	//Create instantiated class name that is universal and will be added to comments array with every passing
+		// this.comments.length++
+		// let newClassObject = $helloComment
+		// console.log(newClassObject);
+
 		// instantiate a Comment
 		const $helloComment = new Comment()
 		console.log($helloComment);
-		console.log(this.bullyStringGenerator.length);
 
-		// Create logic for new class per timer
+		// Create logic for new class per time
 
 		// store in array
 		this.comments.push($helloComment)
 
 		// print on screen
 		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
+		this.startTime()
 		this.scoreboard()
 		this.generateComment()
 	},
 	// Click event listener method that triggers class method
 	revealTruthy($thisComment) {
-		this.comments[0].revealBully($thisComment)
+		this.comments[this.comments.length-1].revealBully($thisComment)
 	},
 
-	startTimer() {
-		const intervalId = setInterval()
+	startTime() {
+		this.intervalID = setInterval(() => {
+			// Will be used for logic like how frequently to display new comment...
+			this.time++
+			// console.log(this.time);
+			
+			// Have addCOmment() pass an argument to create new random instantiated comment.
+				// (Random Logic Here)
+			this.addComment()
+
+
+			// utilize forEach?
+			for(let i = 0; i <= this.comments.length-1; i++) {
+				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
+//					// alt.: Better solution may be to change bully to false within revealBully() class method. 
+				if(this.comments[i].bully === true){
+					this.appUserScore = Math.ceil(this.appUserScore * 0.97)
+					this.appUserScore-=10
+					this.scoreboard()
+				}
+			}
+
+			// this.addComment() placed here when figured out how to instantiate class with new const everytime. 
+
+
+
+		}, 1000)
 	},
 	scoreboard() {
 		this.appUserScore
 		$('.app-users').text(`Recurring Users: ${this.appUserScore}`)
 		console.log(this.appUserScore);
+		if(this.appUserScore <= 0) {
+			$('.app-users').text(`Recurring Users: 0`)
+//			// ClearInterval() goes here
+			clearInterval(this.intervalID)
+			this.gameEnd()
+		}
+	},
+	gameEnd() {
+		console.log("WHAT A SHAME");
+//		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
+
 	},
 	hiddenDivPosition() {
 		for(let i = 0; i <= 20; i++) {
@@ -126,7 +182,7 @@ const game = {
 				width: '10px',
 				height: '10px',
 				// Only visible for testing purposes
-				backgroundColor: 'rgba(245, 245, 245, .4',
+				backgroundColor: 'rgba(245, 245, 245, .5',
 				display: 'inline-block',
 				margin: '3% 16%'
 			})
@@ -153,10 +209,12 @@ const game = {
 game.hiddenDivPosition()
 // game.addComment()
 
-//Event Listeners
-$('#main').on('click', (e) => {
+////Event Listeners
+// Previously #main, but issue with not triggering when clicking in whitespace of .comments
+$('.comments').on('click', (e) => {
 	console.log(e.currentTarget);
-	$thisComment = $(e.target)
+	// Previously e.target
+	$thisComment = $(e.currentTarget)
 	if($thisComment.hasClass('comments')) {
 		game.revealTruthy($thisComment)
 	}
