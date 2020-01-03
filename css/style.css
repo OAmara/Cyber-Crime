@@ -16,10 +16,10 @@ body {
 /*user score displayed on top of main div*/
 .app-users {
 	display:;
-	margin: 0 auto;
+	margin: auto 16%;
 }
 
-/*hidden loop generated div boxes*/
+/*hidden loop generated div boxes. NOT WORKING; implemented with jQuery */
 .hiddenDiv {
 	width: 10px;
 	height: 10px;
@@ -44,8 +44,10 @@ body {
 	border: 2px solid green;
 }
 
-
-
+.userComment {
+	font-size: 12px;
+	display: block;
+}
 
 
 
