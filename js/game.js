@@ -66,17 +66,19 @@ class Comment {
 		if(this.bully === true) {
 			// MAY be better to use .classList or .className , .remove() then .addclass()
 			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
-			game.appUserScore += 80
+
+				if(game.appUserScore > 0) {
+					game.appUserScore += 95
+					game.appUserScore += Math.ceil(game.appUserScore * 0.02)
+				}
 			game.scoreboard()
 
-			// Does not work...Will not display red
-			console.log(this.bully)
+			// Turns any clicked bully to false in order to prevent point decrement for having bully on screen.
 			this.bully = false
-			console.log(this.bully)
 
 			// border: 2px solid red;
 
-			console.log("im truthy");
+			console.log(`I was truthy, now I am ${this.bully}`);
 		}
 
 			//i.e. if(this....bully === false) {jQuery change class name to this new class name that
@@ -106,32 +108,24 @@ const game = {
 	// Just for visualization
 	time: 0,
 	intervalID: 0,
-	addComment() {
-//	//Create instantiated class name that is universal and will be added to comments array with every passing
-		// this.comments.length++
-		// let newClassObject = $helloComment
-		// console.log(newClassObject);
+	hiddenDivPosition() {
+		for(let i = 0; i <= 18; i++) {
+			const $p = $(`<p class='hiddenDiv${i}'></p>`)
+				// `class='${i}'></p>`)
+			$p.css({
+				width: '10px',
+				height: '10px',
+				// Only visible for testing purposes
+				backgroundColor: 'rgba(245, 245, 245, .5',
+				display: 'inline-block',
+				margin: '3% 16%'
+			})
+			$p.appendTo($('#main'))
 
-		// instantiate a Comment
-		const helloComment = new Comment()
-		console.log(helloComment);
-
-		// Create logic for new class per time
-
-		// store in array
-		this.comments.push(helloComment)
-
-		// this.startTime()
-		this.showComment()
+		}
+		this.scoreboard()
+		this.startTime()
 	},
-	// Click event listener method that triggers class method
-	revealTruthy($whatWasClicked) {
-
-		// get index of what was clicked from dataset -- use that instead of this.comments.length - 1
-		this.comments[this.comments.length-1].revealBully($whatWasClicked)
-
-	},
-
 	startTime() {
 		this.intervalID = setInterval(() => {
 			
@@ -154,18 +148,44 @@ const game = {
 			// utilize forEach?
 			for(let i = 0; i <= this.comments.length-1; i++) {
 				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
-//					// alt.: Better solution may be to change bully to false within revealBully() class method. 
+//	used-->		// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
-					this.appUserScore -= Math.ceil(this.appUserScore * 0.05)
+					this.appUserScore -= Math.ceil(this.appUserScore * 0.04)
 					this.appUserScore -= 20
 				}
 			}
 
-			// this.addComment() placed here when figured out how to instantiate class with new const everytime. 
-
 
 			this.scoreboard()
 		}, 1000)
+	},
+	addComment() {
+		// instantiate a Comment
+		const helloComment = new Comment()
+		console.log(helloComment);
+
+		// Create logic for new class per time
+
+		// store in array
+		this.comments.push(helloComment)
+
+		// this.startTime()
+		this.showComment()
+	},
+	showComment() {
+		// * length based on for loop above for hidden divs
+		const randHiddenDiv = Math.floor(Math.random() * 18)
+
+//		// For testing purposes only to view end of main div placement
+		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
+
+		// use data
+			// i.e. .data('name', this.comments.length-1)
+
+		const $p = $(`<p class='comment'><span class="userComment">user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
+		// $p.appendTo($('.hiddenDiv'))
+		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
+		// $p.insertBefore($('.hiddenDiv'))
 	},
 	scoreboard() {
 		this.appUserScore
@@ -180,40 +200,16 @@ const game = {
 		console.log(this.appUserScore);
 	},
 	gameEnd() {
-		console.log("WHAT A SHAME");
+		console.log("WHAT A Shame");
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
 
 	},
-	hiddenDivPosition() {
-		for(let i = 0; i <= 18; i++) {
-			const $p = $(`<p class='hiddenDiv${i}'></p>`)
-				// `class='${i}'></p>`)
-			$p.css({
-				width: '10px',
-				height: '10px',
-				// Only visible for testing purposes
-				backgroundColor: 'rgba(245, 245, 245, .5',
-				display: 'inline-block',
-				margin: '3% 16%'
-			})
-			$p.appendTo($('#main'))
+	// Click event listener method that triggers class method
+	revealTruthy($whatWasClicked) {
 
-		}
-		this.scoreboard()
-		this.startTime()
-	},
-	// generates random comment and user match
-	showComment() {
-		// * length based on for loop above for hidden divs
-		const randHiddenDiv = Math.floor(Math.random() * 18)
+		// get index of what was clicked from dataset -- use that instead of this.comments.length - 1
+		this.comments[this.comments.length-1].revealBully($whatWasClicked)
 
-//		// For testing purposes only
-		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
-
-		const $p = $(`<p class='comment'><span class="userComment">user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
-		// $p.appendTo($('.hiddenDiv'))
-		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
-		// $p.insertBefore($('.hiddenDiv'))
 	}
 
 
