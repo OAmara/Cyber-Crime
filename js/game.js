@@ -7,16 +7,15 @@ console.log(`--Cyber Crime--`);
 
 	// NEXT:  
 		// Create game time(currently in startTime(), 
-		// Score system.
+		// Score system: score decrement based on bully on screen
 		// Be able to create multiple instantiated classes in comments array without hardcoding.
-			// Me be more easily achieved with game time set-up
+			// ^ Was not needed
+
 		// Rounds
 			// Each round adds true within truthy array to increase odds of bully comments.
 			// Proper way may be to extend class to change class each round...
 				//...since a Class should never change. 
 			// BONUS+: Each round stores previous round data into array and displays stats before resetting variables. Maybe user want to be able to go back to previous rounds?
-
-	//// NOW: New random instantiated class, then score decrement based on bully on screen
 
 
 // Class
@@ -26,7 +25,7 @@ class Comment {
 //		// Add/ Remove a True or False in truthy Array to alter odds of getting one over another.
 			// Additional rounds may have more true (bullys) to become progressively harder.
 			// i.e. [true, false, true, true] --> 75% chance it will be true
-		const truthy = [true, false, true]
+		const truthy = [true, false, false]
 		const randomTruthy = Math.floor(Math.random() * truthy.length)
 		this.bully = truthy[randomTruthy]
 
@@ -47,10 +46,6 @@ class Comment {
 
 		// Add constructor for creating h2 with class comments. Then this can be accessed with revealBully?
 
-
-		// this.user = 	// this.reportUser[0]
-		// this.string = 	// this.comments[0].string
-
 	}
 	revealBully($whatWasClicked) {
 		// alt. = changing bully color to regular when clicked and regular disappears when clicked.
@@ -68,8 +63,8 @@ class Comment {
 			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
 
 				if(game.appUserScore > 0) {
-					game.appUserScore += 142
-					game.appUserScore += Math.ceil(game.appUserScore * 0.04)
+					game.appUserScore += 242
+					game.appUserScore += Math.ceil(game.appUserScore * 0.064)
 				}
 			game.scoreboard()
 
@@ -109,16 +104,16 @@ const game = {
 	time: 0,
 	intervalID: 0,
 	hiddenDivPosition() {
-		for(let i = 0; i <= 18; i++) {
+		for(let i = 0; i <= 1200; i++) {
 			const $p = $(`<p class='hiddenDiv${i}'></p>`)
 				// `class='${i}'></p>`)
 			$p.css({
-				width: '10px',
-				height: '10px',
+				width: '2.5px',
+				height: '2.5px',
 				// Only visible for testing purposes
-				backgroundColor: 'rgba(245, 245, 245, .5',
+				backgroundColor: 'rgba(245, 245, 245, .75',
 				display: 'inline-block',
-				margin: '3% 16%'
+				margin: '0.2% 0.2%'
 			})
 			$p.appendTo($('#main'))
 
@@ -136,7 +131,7 @@ const game = {
 			// Have addCOmment() pass an argument to create new random instantiated comment.
 			this.appUserScore
 			if (this.appUserScore > 0) {
-				if (this.time % 2 === 0 || this.time % 5 === 0) {
+				if (this.time % 2 === 0 || this.time % 3 === 0) {
 
 				this.addComment()
 				}
@@ -148,14 +143,14 @@ const game = {
 				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
 //	used-->		// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
-					this.appUserScore -= Math.ceil(this.appUserScore * 0.035)
-					this.appUserScore -= 20
+					this.appUserScore -= Math.ceil(this.appUserScore * 0.0018)
+					this.appUserScore -= 5
 				}
 			}
 
 
 			this.scoreboard()
-		}, 900)
+		}, 300)
 	},
 	addComment() {
 		// instantiate a Comment
@@ -172,7 +167,7 @@ const game = {
 	},
 	showComment() {
 		// * length based on for loop above for hidden divs
-		const randHiddenDiv = Math.floor(Math.random() * 18)
+		const randHiddenDiv = Math.floor(Math.random() * 1200)
 
 //		// For testing purposes only to view end of main div placement
 		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
@@ -193,14 +188,16 @@ const game = {
 		const $p = $(`<p class='comment'><span class='userComment'>user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
 
 		$p.data('whichComment', this.comments.length-1)
-		// $p.appendTo($('.hiddenDiv'))
+
 		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
 		// $p.insertBefore($('.hiddenDiv'))
 	},
 	scoreboard() {
+		// Need to get streak to 5 stars and score to 3000 for round 2.
 		this.appUserScore
 		this.time
 		$('.app-users').text(`Recurring Users: ${this.appUserScore}`)
+		$('.user-streak').text(`star`)
 		if(this.appUserScore <= 0) {
 			$('.app-users').text(`Recurring Users: 0`)
 //			// ClearInterval() goes here
