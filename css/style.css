@@ -29,7 +29,7 @@ body {
 }
 
 /*This selector will create CSS for all generated comments*/
-.comments {
+.comment {
 	border: 1px solid grey;
 	border-radius: 10px;
 	display: inline-block;

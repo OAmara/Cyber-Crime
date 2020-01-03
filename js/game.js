@@ -52,12 +52,12 @@ class Comment {
 		// this.string = 	// this.comments[0].string
 
 	}
-	revealBully($thisComment) {
+	revealBully($whatWasClicked) {
 		// alt. = changing bully color to regular when clicked and regular disappears when clicked.
 
 		//change border color, maybe even bgColor to mainly transparent red or green
 		if(this.bully === false) {
-			$thisComment.addClass('revealedFalse').hide(5000).text(`${this.user} wrote "I'm giving you a bad rating"`).css('fontSize', '0.85em')
+			$whatWasClicked.addClass('revealedFalse').hide(5000).text(`${this.user} wrote "I'm giving you a bad rating"`).css('fontSize', '0.85em')
 			game.appUserScore = Math.ceil(game.appUserScore * 0.75)
 			game.scoreboard()
 
@@ -65,7 +65,7 @@ class Comment {
 		}
 		if(this.bully === true) {
 			// MAY be better to use .classList or .className , .remove() then .addclass()
-			$thisComment.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
+			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
 			game.appUserScore += 80
 			game.scoreboard()
 
@@ -113,20 +113,23 @@ const game = {
 		// console.log(newClassObject);
 
 		// instantiate a Comment
-		const $helloComment = new Comment()
-		console.log($helloComment);
+		const helloComment = new Comment()
+		console.log(helloComment);
 
 		// Create logic for new class per time
 
 		// store in array
-		this.comments.push($helloComment)
+		this.comments.push(helloComment)
 
 		// this.startTime()
 		this.showComment()
 	},
 	// Click event listener method that triggers class method
-	revealTruthy($thisComment) {
-		this.comments[this.comments.length-1].revealBully($thisComment)
+	revealTruthy($whatWasClicked) {
+
+		// get index of what was clicked from dataset -- use that instead of this.comments.length - 1
+		this.comments[this.comments.length-1].revealBully($whatWasClicked)
+
 	},
 
 	startTime() {
@@ -143,8 +146,8 @@ const game = {
 				// let createNewComment = hi//this.comments.length
 				// this.addComment(createNewComment)
 
-				// temporary fix
-				this.comments = []
+				// temporary fix?
+				// this.comments = []
 				this.addComment()
 			}
 
@@ -153,15 +156,15 @@ const game = {
 				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
 //					// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
-					this.appUserScore = Math.ceil(this.appUserScore * 0.97)
-					this.appUserScore -= 10
+					this.appUserScore -= Math.ceil(this.appUserScore * 0.05)
+					this.appUserScore -= 20
 				}
 			}
 
 			// this.addComment() placed here when figured out how to instantiate class with new const everytime. 
 
 
-		this.scoreboard()
+			this.scoreboard()
 		}, 1000)
 	},
 	scoreboard() {
@@ -183,7 +186,7 @@ const game = {
 	},
 	hiddenDivPosition() {
 		for(let i = 0; i <= 18; i++) {
-			$p = $(`<p class='hiddenDiv${i}'></p>`)
+			const $p = $(`<p class='hiddenDiv${i}'></p>`)
 				// `class='${i}'></p>`)
 			$p.css({
 				width: '10px',
@@ -207,7 +210,7 @@ const game = {
 //		// For testing purposes only
 		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
 
-		$p = $(`<p class='comments'><span class="userComment">user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
+		const $p = $(`<p class='comment'><span class="userComment">user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
 		// $p.appendTo($('.hiddenDiv'))
 		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
 		// $p.insertBefore($('.hiddenDiv'))
@@ -219,12 +222,12 @@ game.hiddenDivPosition()
 // game.addComment()
 
 ////Event Listeners
-// try: #main w/ e.target try: .comments w/ e.currentTarget
+// try: #main w/ e.target try: .comment w/ e.currentTarget
 $('#main').on('click', (e) => {
 	console.log(e.currentTarget);
 	// Previously e.target
-	$thisComment = $(e.target)
-	if($thisComment.hasClass('comments')) {
+	const $thisComment = $(e.target)
+	if($thisComment.hasClass('comment')) {
 		game.revealTruthy($thisComment)
 	}
 	// Utilize way to change comment when clicked on. Change ID main to general comment class?
