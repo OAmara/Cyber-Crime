@@ -11,7 +11,7 @@ console.log(`--Cyber Crime--`);
 
 // Class
 class Comment {
-	constructor(bully, string) {
+	constructor(bully, string, user) {
 		//bad or good  randomly assign
 		const truthy = [true, false]
 		const randomTruthy = Math.floor(Math.random() * truthy.length)
@@ -27,6 +27,10 @@ class Comment {
 		if (this.bully == false) {
 			this.string = game.regularStringGenerator[randomRegular].string
 		}
+
+		// Random user reported comment
+		const randomUser = Math.floor(Math.random() * game.reportUser.length)
+		this.user = game.reportUser[randomUser]
 
 		// Add constructor for creating h2 with class comments. Then this can be accessed with revealBully?
 
@@ -65,17 +69,17 @@ class Comment {
 // Game
 const game = {
 	// Random user reporting comment
-	reportUser: ['Penguin1137', 'DirtyHarry'],
-	// Comments; "bully" = true, "regular" = false
+	reportUser: ['Penguin1137', 'DirtyHarry', 'sparkles87'],
+	// Comments; "bully" = true, "regular" = false --> may not need this.
 	bullyStringGenerator: [{
 		string: "Bad Negative Comment",
 		bully: true
 	}],
 	regularStringGenerator: [{
-		string: "hello",
+		string: "Hello, I am a Good Comment",
 		bully: false
 	}, {
-		string: "world",
+		string: "Good Comment, nice to meet you",
 		bully: false
 	}],
 	comments: [],
