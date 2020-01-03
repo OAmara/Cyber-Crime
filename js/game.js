@@ -5,8 +5,7 @@ console.log(`--Cyber Crime--`);
 	// Create test comment to appendTo random hidden div. within main div.
 	// test clicks
 
-	// NEXT: Random string added to constructor from string array. Random hidden div.
-		// if statement to determine if string is coming from bully or regular generator
+	// NEXT: create game timer, add instantiated class to random div
 
 
 // Class
@@ -85,12 +84,14 @@ const game = {
 	comments: [],
 	addComment() {
 		// instantiate a Comment
-		const helloComment = new Comment()
-		console.log(helloComment);
+		const $helloComment = new Comment()
+		console.log($helloComment);
 		console.log(this.bullyStringGenerator.length);
 
+		// Create logic for new class per timer
+
 		// store in array
-		this.comments.push(helloComment)
+		this.comments.push($helloComment)
 
 		// print on screen
 		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
@@ -123,16 +124,14 @@ const game = {
 	},
 	// generates random comment and user match
 	generateComment() {
-		const randReportUser = Math.floor(Math.random() * this.reportUser.length)
-		const randComment = Math.floor(Math.random() * this.bullyStringGenerator.length)
-		// Will have to find logic to 
+		// * length based on for loop above for hidden divs
 		const randHiddenDiv = Math.floor(Math.random() * 15)
 
 		$(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
 
 		$p = $(`<p class='comments'><span class="userComment">user: ${this.reportUser[0]}</span>"${this.bullyStringGenerator[0].string}"</p>`)
 		// $p.appendTo($('.hiddenDiv'))
-		$p.insertAfter($('.hiddenDiv8'))
+		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
 		// $p.insertBefore($('.hiddenDiv'))
 	}
 
