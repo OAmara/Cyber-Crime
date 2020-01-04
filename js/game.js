@@ -17,6 +17,11 @@ console.log(`--Cyber Crime--`);
 				//...since a Class should never change. 
 			// BONUS+: Each round stores previous round data into array and displays stats before resetting variables. Maybe user want to be able to go back to previous rounds?
 
+		// Skills
+			// First skill button is to use 2 stars to wipe all good commemnts on screen.
+				// On hover: display skill button discription.
+				// USE EMOJI CODE: \u{1F4AB} or \u{1F320} --> increase font-size w/ CSS.
+
 
 // Class
 class Comment {
@@ -25,7 +30,7 @@ class Comment {
 //		// Add/ Remove a True or False in truthy Array to alter odds of getting one over another.
 			// Additional rounds may have more true (bullys) to become progressively harder.
 			// i.e. [true, false, true, true] --> 75% chance it will be true
-		const truthy = [true, false, false]
+		const truthy = [true, false, true]
 		const randomTruthy = Math.floor(Math.random() * truthy.length)
 		this.bully = truthy[randomTruthy]
 
@@ -54,7 +59,16 @@ class Comment {
 		if(this.bully === false) {
 			$whatWasClicked.addClass('revealedFalse').hide(5000).text(`${this.user} wrote "I'm giving you a bad rating"`).css('fontSize', '0.85em')
 			game.appUserScore = Math.ceil(game.appUserScore * 0.75)
+
+			// Determines click streak for next round
+			if (game.stars > 0) {
+				game.stars -= 2
+				if (game.stars <= 0) {
+					game.stars = 0
+				}
+			}
 			game.scoreboard()
+
 
 			console.log("im falsy");
 		}
@@ -66,6 +80,7 @@ class Comment {
 					game.appUserScore += 242
 					game.appUserScore += Math.ceil(game.appUserScore * 0.064)
 				}
+				game.stars++
 			game.scoreboard()
 
 			// Turns any clicked bully to false in order to prevent point decrement for having bully on screen.
@@ -102,16 +117,17 @@ const game = {
 	appUserScore: 1000,
 	// Just for visualization
 	time: 0,
+	stars: 0,
 	intervalID: 0,
 	hiddenDivPosition() {
-		for(let i = 0; i <= 1200; i++) {
+		for(let i = 0; i <= 2500; i++) {
 			const $p = $(`<p class='hiddenDiv${i}'></p>`)
 				// `class='${i}'></p>`)
 			$p.css({
 				width: '2.5px',
 				height: '2.5px',
 				// Only visible for testing purposes
-				backgroundColor: 'rgba(245, 245, 245, .75',
+				backgroundColor: 'rgba(245, 245, 245, .65',
 				display: 'inline-block',
 				margin: '0.2% 0.2%'
 			})
@@ -131,7 +147,11 @@ const game = {
 			// Have addCOmment() pass an argument to create new random instantiated comment.
 			this.appUserScore
 			if (this.appUserScore > 0) {
-				if (this.time % 2 === 0 || this.time % 3 === 0) {
+				if (this.time % 12 === 0) {
+
+				this.addComment()
+				}
+				if (this.time % 12 === 0 && this.time % 14 === 0) {
 
 				this.addComment()
 				}
@@ -143,19 +163,21 @@ const game = {
 				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
 //	used-->		// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
-					this.appUserScore -= Math.ceil(this.appUserScore * 0.0018)
-					this.appUserScore -= 5
+					this.appUserScore -= Math.ceil(this.appUserScore * 0.0038)
+					this.scoreboard()
+					this.appUserScore -= 1
 				}
 			}
 
 
 			this.scoreboard()
-		}, 300)
+//		// Keep closely around 200
+		}, 500)
 	},
 	addComment() {
 		// instantiate a Comment
 		const helloComment = new Comment()
-		console.log(helloComment);
+		// console.log(helloComment);
 
 		// Create logic for new class per time
 
@@ -167,7 +189,7 @@ const game = {
 	},
 	showComment() {
 		// * length based on for loop above for hidden divs
-		const randHiddenDiv = Math.floor(Math.random() * 1200)
+		const randHiddenDiv = Math.floor(Math.random() * 2500)
 
 //		// For testing purposes only to view end of main div placement
 		// $(`<h2 class="comments"></h2`).text(this.comments[0].bully).appendTo($('#main'))
@@ -196,8 +218,14 @@ const game = {
 		// Need to get streak to 5 stars and score to 3000 for round 2.
 		this.appUserScore
 		this.time
+		// Score Display
 		$('.app-users').text(`Recurring Users: ${this.appUserScore}`)
-		$('.user-streak').text(`star`)
+		// Streak Display
+		$('.user-streak').text(`Streak: `)
+		// First skill button display
+		$('#skill-star-comment-clear').text(`\u{1F4AB}`)
+		this.starStreak()
+		// this.buttonPresentation()
 		if(this.appUserScore <= 0) {
 			$('.app-users').text(`Recurring Users: 0`)
 //			// ClearInterval() goes here
@@ -206,9 +234,66 @@ const game = {
 		}
 		console.log(this.appUserScore);
 	},
+	starStreak() {
+		if (this.stars >= 10 && this.appUserScore >= 3000) {
+			this.nextRound()
+		} else {
+			if (this.stars <= 1) {
+				// Display this image attr in class .user-streak
+				$(`.user-streak`).text(`Streak: \u{2605} \u{2605} \u{2605} \u{2605} \u{2605}`)
+			} else if (this.stars >= 2 && this.stars <= 3) {
+				// Display this image
+				$(`.user-streak`).text(`Streak: \u{2B50} \u{2605} \u{2605} \u{2605} \u{2605}`)
+			} else if (this.stars >= 4 && this.stars <= 5) {
+				// Display this image
+				$(`.user-streak`).text(`Streak: \u{2B50} \u{2B50} \u{2605} \u{2605} \u{2605}`)
+			} else if (this.stars >= 6 && this.stars <= 7) {
+				// Display this image
+				$(`.user-streak`).text(`Streak: \u{2B50} \u{2B50} \u{2B50} \u{2605} \u{2605}`)
+			} else if (this.stars >= 8 && this.stars <= 9) {
+				// Display this image
+				$(`.user-streak`).text(`Streak: \u{2B50} \u{2B50} \u{2B50} \u{2B50} \u{2605}`)
+			} else if (this.stars >= 10) {
+				// Display this image
+				$(`.user-streak`).text(`Streak: \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F}`)
+			}
+		}
+
+	},
+	nextRound() {
+		clearInterval(this.intervalID)
+		console.log('you beat the round');
+		$(`.user-streak`).text(`Streak: \u{1F929} \u{1F929} \u{1F929} \u{1F929} \u{1F929}`)
+
+	},
 	gameEnd() {
 		console.log("WHAT A Shame");
+		$(`.user-streak`).text(`Losing Streak: \u{26B0} \u{FE0F}`) //⚰️
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
+
+	},
+	// this changes display and usage of buttons according to if skill is ready...
+	// have passing arg look like: buttonPresentation(null, skill2, null)
+	buttonPresentation(skill1, skill2, skill3) { 
+		// Skill: clear all regular comments from screen. Costs 2 stars
+			// cooldown?
+				//setInterval started within button with id to stop after time variable reaches after 5 seconds?
+
+		// Button appearance when pressed while during cooldown.
+		// if(brand new timer is < certain amount){
+				$('#skill-star-comment-clear').css({
+				//demonstration
+				border: '3px solid blue'
+			})
+		// }
+
+		//way to clear reg comments?:
+			// 'p.comment'  if (this.comment[i].bully === false) {
+						    // .hide
+						    // this.stars -= 2
+					    	// }
+		const hello = console.log(skill1)
+		// console.log(hello);
 
 	},
 	// Click event listener method that triggers class method
@@ -228,6 +313,7 @@ game.hiddenDivPosition()
 // game.addComment()
 
 ////Event Listeners
+// Comment truthy/ falsy reveal
 // try: #main w/ e.target try: .comment w/ e.currentTarget
 $('#main').on('click', (e) => {
 	console.log(e.currentTarget);
@@ -236,11 +322,12 @@ $('#main').on('click', (e) => {
 	if($thisComment.hasClass('comment')) {
 		game.revealTruthy($thisComment)
 	}
-	// Utilize way to change comment when clicked on. Change ID main to general comment class?
-	// if (e.currentTarget...bully === true) {
-	// 	this.revealBully
-	// }
+})
 
+$('#skill-star-comment-clear').on('click', (e) => {
+	console.log(e.target);
+	const $skillClick = $(e.target)
+	game.buttonPresentation($skillClick)
 })
 
 

@@ -35,7 +35,7 @@ body {
 /*This selector will create CSS for all generated comments*/
 .comment {
 	border: 1px solid grey;
-	border-radius: 10px;
+	border-radius: 100px;
 	display: inline-block;
 	text-align: center;
 	padding: 0 10px;
@@ -58,6 +58,12 @@ body {
 /*changed comment when clicked based on if statement when clicked*/
 .revealedFalse {
 	border: 2px solid lightgreen;
+}
+
+#skill-star-comment-clear {
+	font-size: 3em;
+	padding: 0;
+	margin: auto 5% auto 20%;
 }
 
 
