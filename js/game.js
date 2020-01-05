@@ -17,7 +17,7 @@ console.log(`--Cyber Crime--`);
 				//...since a Class should never change. 
 			// BONUS+: Each round stores previous round data into array and displays stats before resetting variables. Maybe user want to be able to go back to previous rounds?
 
-		// Skills
+		// Skills -- look at skill1 to continue
 			// First skill button is to use 2 stars to wipe all good commemnts on screen.
 				// On hover: display skill button discription.
 				// USE EMOJI CODE: \u{1F4AB} or \u{1F320} --> increase font-size w/ CSS.
@@ -52,6 +52,7 @@ class Comment {
 		// Add constructor for creating h2 with class comments. Then this can be accessed with revealBully?
 
 	}
+//	// IN ORDER TO change increments/ decrements per round. if statements can instead call method in game that will determine truthy or falsy. This will be done to then change per round for difficulty setting.
 	revealBully($whatWasClicked) {
 		// alt. = changing bully color to regular when clicked and regular disappears when clicked.
 
@@ -76,11 +77,12 @@ class Comment {
 			// MAY be better to use .classList or .className , .remove() then .addclass()
 			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
 
-				if(game.appUserScore > 0) {
-					game.appUserScore += 242
-					game.appUserScore += Math.ceil(game.appUserScore * 0.064)
-				}
-				game.stars++
+			if(game.appUserScore > 0) {
+				game.appUserScore+=242
+				game.appUserScore+=Math.ceil(game.appUserScore * 0.064)
+			}
+			game.stars++
+			game.bullyAccountsBanned++
 			game.scoreboard()
 
 			// Turns any clicked bully to false in order to prevent point decrement for having bully on screen.
@@ -118,7 +120,17 @@ const game = {
 	// Just for visualization
 	time: 0,
 	stars: 0,
+	bullyAccountsBanned: 0,
 	intervalID: 0,
+	// round & pauseRound logic used for when game/round Ends or when user pauses round.
+	// Goal: Game logic will pause when round != pauseRound. When pause button pressed to pause, pauseRound +=1,
+	//pressed again pauseRound -=1. Same when starting next round
+	round: 0,
+	pauseRound: 0,
+
+
+	// roundStatHolder array containing each round statistic to display when paused and next round screen.
+	roundStatistics: [],
 	hiddenDivPosition() {
 		for(let i = 0; i <= 2500; i++) {
 			const $p = $(`<p class='hiddenDiv${i}'></p>`)
@@ -127,7 +139,7 @@ const game = {
 				width: '2.5px',
 				height: '2.5px',
 				// Only visible for testing purposes
-				backgroundColor: 'rgba(245, 245, 245, .65',
+				backgroundColor: 'rgba(245, 245, 245, .95',
 				display: 'inline-block',
 				margin: '0.2% 0.2%'
 			})
@@ -136,6 +148,13 @@ const game = {
 		}
 		this.scoreboard()
 		this.startTime()
+
+//ONLY HERE FOR TESTING: place in  when done
+				$('#main').css({
+			filter: 'blur(1.5px)'
+		})
+		$('#stats').show().text("hi there")
+//ONLY HERE FOR TESTING ^^: place in statRoundDisplay() when done and call in endRound() and endGame() and click event for Pause button. Will be #pause-game -->
 	},
 	startTime() {
 		this.intervalID = setInterval(() => {
@@ -165,14 +184,16 @@ const game = {
 				if(this.comments[i].bully === true){
 					this.appUserScore -= Math.ceil(this.appUserScore * 0.0038)
 					this.scoreboard()
-					this.appUserScore -= 1
+					this.appUserScore--
+				} else{
+					this.appUserScore++
 				}
 			}
 
 
 			this.scoreboard()
-//		// Keep closely around 200
-		}, 500)
+//		// Keep very closely around 200
+		}, 200)
 	},
 	addComment() {
 		// instantiate a Comment
@@ -216,14 +237,17 @@ const game = {
 	},
 	scoreboard() {
 		// Need to get streak to 5 stars and score to 3000 for round 2.
+	
 		this.appUserScore
 		this.time
 		// Score Display
 		$('.app-users').text(`Recurring Users: ${this.appUserScore}`)
 		// Streak Display
 		$('.user-streak').text(`Streak: `)
-		// First skill button display
+		// First skill button Display
 		$('#skill-star-comment-clear').text(`\u{1F4AB}`)
+		// Pause button Display
+		$('#pause').text(`||`)
 		this.starStreak()
 		// this.buttonPresentation()
 		if(this.appUserScore <= 0) {
@@ -236,7 +260,7 @@ const game = {
 	},
 	starStreak() {
 		if (this.stars >= 10 && this.appUserScore >= 3000) {
-			this.nextRound()
+			this.endRound()
 		} else {
 			if (this.stars <= 1) {
 				// Display this image attr in class .user-streak
@@ -260,16 +284,61 @@ const game = {
 		}
 
 	},
-	nextRound() {
+	endRound() {
+		// Logic for pausing round until starting next round.
+		this.stars
+		this.round++
+		console.log(this.round);
 		clearInterval(this.intervalID)
 		console.log('you beat the round');
 		$(`.user-streak`).text(`Streak: \u{1F929} \u{1F929} \u{1F929} \u{1F929} \u{1F929}`)
+//		// Implement new variable that saves round variables as statistics within an array object then wipes them to create new round
+//			//i.e. push new roundStatHolder to roundStatistics Array. Then can be called with roundStatistics[this.round-1]
+		// Round variables held in here, pushed into roundStatistics, then erased for next round.
+		const roundStatHolder = [{
+			roundIs: this.round/*this.round*/,
+			bullyAccountsBannedIs: this.bullyAccountsBanned/*this.*/,
+		}, {
 
+		}]
+		console.log(roundStatHolder);
+		this.roundStatistics.push(roundStatHolder)
+		console.log(this.roundStatistics[this.round-1]);
+
+		// this.statRoundDisplay()
+
+		// this.newRound()
+	},
+	newRound() {
+//		// USE css to clear screen within divs then start with this.hiddenDivPosition() instead
+		// this.startTime()
+		//Next round button pressed === ture {this.pauseRound++}
+			// placed for now
+			// this.pauseRound++
 	},
 	gameEnd() {
+		this.round++
 		console.log("WHAT A Shame");
 		$(`.user-streak`).text(`Losing Streak: \u{26B0} \u{FE0F}`) //⚰️
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
+	
+	// this.statRoundDisplay()
+
+	},
+	// Displays roundstats with next round button displayed. Blurs background(z-index: -1) html.
+	statRoundDisplay() {
+
+
+
+
+	},
+	// Pause button click event that displays how to play while paused:
+	pauseGame() {
+	// (i)
+	// Similar to statRoundDisplay(), but displays how to play (i)info.
+	// alt: display stats, roundStatHolder variable will have to be pushed at beginning of game to be displayed at any moment.
+	// Also change css for pause button(w/ emoji) to play button(w/ emoji)
+
 
 	},
 	// this changes display and usage of buttons according to if skill is ready...
@@ -283,7 +352,7 @@ const game = {
 		// if(brand new timer is < certain amount){
 				$('#skill-star-comment-clear').css({
 				//demonstration
-				border: '3px solid blue'
+				border: '2px solid yellow'
 			})
 		// }
 
@@ -318,19 +387,31 @@ game.hiddenDivPosition()
 $('#main').on('click', (e) => {
 	console.log(e.currentTarget);
 	// Previously e.target
-	const $thisComment = $(e.target)
-	if($thisComment.hasClass('comment')) {
-		game.revealTruthy($thisComment)
+	if (game.round === game.pauseRound) {
+		const $thisComment = $(e.target)
+		if ($thisComment.hasClass('comment')) {
+			game.revealTruthy($thisComment)
+		}
 	}
 })
 
+// Skill1 button to clear all regular comments to sacrifice 2 stars
 $('#skill-star-comment-clear').on('click', (e) => {
 	console.log(e.target);
-	const $skillClick = $(e.target)
-	game.buttonPresentation($skillClick)
+	if (game.round === game.pausRound) {
+		const $skillClick = $(e.target)
+		game.buttonPresentation($skillClick)
+	}
+	// Reference tamagtochi for utilizing clicks to change variable values. How can this be utilized in passing argument into game method. That way data will be stored more properly.
 })
 
+// Pause game button that triggers game.pauseGame()
+$('#pause').on('click', (e) => {
+	
+	game.pauseGame()
 
+
+})
 
 
 

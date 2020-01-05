@@ -10,7 +10,17 @@ body {
 	border-width: 3px;
 	margin: auto;
 	overflow: scroll;
+	z-index: -1;
 	/*overflow: overlay;*/
+}
+#stats {
+	z-index: 1;
+	/*position probably better as absolute*/
+	position: fixed; 
+	width: 450px;
+	height: 450px;
+	text-align: center;
+	margin: 10%;
 }
 
 /*user score displayed on top of main div*/
@@ -41,9 +51,41 @@ body {
 	padding: 0 10px;
 	margin: 0.1% 0 0.2% 0.45%;
 	/*do not like userComment not on far left of box*/
-	width: ;
+	/*width: ;*/
 	/*position: ;*/
 }
+/*.comment {
+	box-sizing: border-box;
+	width: 150px;
+	height: 150px;
+	padding: 80px 1em 0 1em;
+	margin: 0 100px;
+	position: relative;
+	background-color: lightcyan;
+	border-radius: 100% 100% 0 0;
+	display: inline-block;
+}
+.comment::before,
+.comment::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	z-index: -1;
+	background-color: lightcyan;
+	border-radius: 100%;
+}
+.comment:before {
+	width: 90px;
+	height: 90px;
+	left: -80px;
+	border-bottom-right-radius: 0;
+}
+.comment::after {
+	width: 70px;
+	height: 70px;
+	right: -60px;
+	border-bottom-left-radius: 0;
+}*/
 .userComment {
 	font-size: 0.85em;
 	display: block;
@@ -63,8 +105,32 @@ body {
 #skill-star-comment-clear {
 	font-size: 3em;
 	padding: 0;
+	border: 1px solid lightgreen;
 	margin: auto 5% auto 20%;
+	background-color: ;
 }
+
+#pause {
+	height: 40px;
+	width: 1px;
+	font-size: 2.5em;
+	padding: 0px 5px;
+	margin: auto 5% auto 50%;
+	background-color: lightgrey;
+	box-shadow: 0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey;
+	color: rgba(150, 150, 150, 0);
+
+}
+	#pause:hover {
+	height: 40px;
+	width: 1px;
+	font-size: 2.5em;
+	padding: 0px 5px;
+	margin: auto 5% auto 50%;
+	background-color: whitesmoke;
+	box-shadow: 0px 0px 8px 1px grey, 20px 0px 0px 0px whitesmoke, 20px 0px 8px 1px grey;
+	color: rgba(150, 150, 150, 0);
+	}
 
 
 
