@@ -1,5 +1,6 @@
 body {
 	background-color: whitesmoke;
+	font-family: 'Ubuntu', sans-serif;
 }
 
 #main {
@@ -16,11 +17,11 @@ body {
 #stats {
 	z-index: -1;
 	/*position probably better as absolute*/
-	position: fixed; 
+	position: absolute; 
 	width: 900px;
 	height: 700px;
 	text-align: center;
-	margin: 10px 18%;
+	margin: 1px 18%;
 	font-size: 2em;
 	font-weight: 800;
 	display: block;
@@ -49,7 +50,7 @@ body {
 	width: 900px;
 	height: 700px;
 	text-align: center;
-	margin: 10px 18%;
+	margin: 1px 18%;
 	font-size: 2em;
 	font-weight: 800;
 	display: block;

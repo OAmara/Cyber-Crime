@@ -242,15 +242,8 @@ const game = {
 		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
 		// $p.insertBefore($('.hiddenDiv'))
 
-//		//ONLY HERE FOR TESTING:
-		// $('#main').css({
-		// 	filter: 'blur(1.8px)',
-		// 	zIndex: '-1'
-		// })
-		// $('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4>\n\t~ Round ${this.round} Statistics ~\n</h4>`).append(`<h5>Recurring App Users:${this.appUserScore}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users</h5>`).append(`<h6>Get ready to start clock in!</h6>`).append(`<button class="stat-button">Round ${(this.round) + 1}</button>`).show().css({
-		// 	zIndex: '1'
-		// })
-//ONLY HERE FOR TESTING ^^: place in roundStatDisplay() when done and call in endRound() and endGame() and click event for Pause button. Will be #pause-game -->
+//		//Place roundStatDisplay() content HERE FOR TESTING:
+
 
 	},
 	scoreboard(buttonPause) {
@@ -328,12 +321,12 @@ const game = {
 		console.log(this.roundStatistics[this.round-1]);
 		console.log(this.roundStatistics[this.round-1].appUserScoreIs);
 
-	
 
 		this.roundStatDisplay()
 
 		// this.newRound()
 	},
+	// Click event for button that displays when round is won.
 	newRound() {
 //		// USE css to clear screen within divs then start with this.hiddenDivPosition() instead
 		// this.startTime()
@@ -341,7 +334,7 @@ const game = {
 
 	$('#main').css({
 			filter: 'blur(0px)',
-			zIndex: '1'
+			// zIndex: '1'
 	})
 	$('#stats').hide().css({
 		zIndex: '-1'
@@ -368,22 +361,24 @@ const game = {
 	// Displays roundstats with next round button displayed. Blurs background(z-index: -1) html.
 	roundStatDisplay() {
 
-		// Might Need for future math use
-		// if (this.round <= 1) {
-		// 	this.totalUsers = this.appUserScore
-		// } else {
-		// 	for (let i = 0; i <= this.roundStatistics.length; i++) {
-		// 		this.totalUsers += this.roundStatistics[i].appUserScoreIs
-		// 	}
-		// }
+		if (this.round <= 1) {
+			this.totalUsers = (this.appUserScore)
+		} else {
+			// Might Need for future math use
+			// for (let i = 0; i <= this.roundStatistics.length; i++) {
+			// 	this.totalUsers += this.roundStatistics[i].appUserScoreIs
+			// }
+			this.totalUsers = (this.appUserScore) - (this.roundStatistics[this.round-2].appUserScoreIs)
+		}
 
 		$('#main').css({
-			filter: 'blur(2px)',
-			zIndex: '-1'
+			filter: 'blur(2.1px)',
+			// zIndex: '-1'
 		})
 //Bug	// Turn all tags into html and jQUery the text into them.
-		$('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4><br/>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.roundStatistics[this.round-1].appUserScoreIs}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tips: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
-			zIndex: '1'
+		$('#stats').empty()
+		$('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4><br/>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tips: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
+			zIndex: '2'
 		})
 		$('#pause').hide()
 
@@ -427,7 +422,7 @@ const game = {
 			}).text('play')
 
 			$('#while-pause').css({
-				zIndex: '2'
+				zIndex: '4'
 			})
 
 		}
@@ -448,7 +443,7 @@ const game = {
 			})
 
 			$('#while-pause').css({
-				zIndex: '-2'
+				zIndex: '-4'
 			})
 
 		}
@@ -500,11 +495,18 @@ $('#main').on('click', (e) => {
 	console.log(e.currentTarget);
 	// Previously e.target
 	if (game.round === game.pauseRound) {
-		const $thisComment = $(e.target)
+		const $clicked = $(e.target)
 //		// To prevent from only <p>(comment) being clickable, try inserting whole const $p in <div class='comment'>
-		if ($thisComment.hasClass('comment')) {
-			game.revealTruthy($thisComment)
-		}
+		// if user clicks comment
+		if ($clicked.hasClass('comment')) {
+			game.revealTruthy($clicked)
+		} 
+		// if user clicks name (in this case, comment is parent)
+/*
+		else if (parent is 'comment') {
+			game.revealTruthy(parent of clicked)			
+		} 
+*/	
 	}
 })
 
