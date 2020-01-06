@@ -59,15 +59,17 @@ class Comment {
 		//change border color, maybe even bgColor to mainly transparent red or green
 		if(this.bully === false) {
 			$whatWasClicked.addClass('revealedFalse').hide(5000).text(`${this.user} wrote "I'm giving you a bad rating"`).css('fontSize', '0.85em')
+//			// Place all scoring within new method in game
 			game.appUserScore = Math.ceil(game.appUserScore * 0.75)
 
-			// Determines click streak for next round
+			// Determines Rating for next round
 			if (game.stars > 0) {
 				game.stars -= 2
 				if (game.stars <= 0) {
 					game.stars = 0
 				}
 			}
+			game.wrongUsersBanned++
 			game.scoreboard()
 
 
@@ -77,8 +79,11 @@ class Comment {
 			// MAY be better to use .classList or .className , .remove() then .addclass()
 			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
 
+			// Place all scoring within new method in game		
 			if(game.appUserScore > 0) {
 				game.appUserScore+=242
+				// For testing
+				game.appUserScore+= 1000
 				game.appUserScore+=Math.ceil(game.appUserScore * 0.064)
 			}
 			game.stars++
@@ -120,7 +125,10 @@ const game = {
 	// Just for visualization
 	time: 0,
 	stars: 0,
+	// Total correct clicks
 	bullyAccountsBanned: 0,
+	// Total wrong clicks; Total: star loss, banned regular user
+	wrongUsersBanned: 0,
 	intervalID: 0,
 	// round & pauseRound logic used for when game/round Ends or when user pauses round.
 	// Goal: Game logic will pause when round != pauseRound. When pause button pressed to pause, pauseRound +=1,
@@ -131,6 +139,7 @@ const game = {
 
 	// roundStatHolder array containing each round statistic to display when paused and next round screen.
 	roundStatistics: [],
+	totalUsers: 0,
 	hiddenDivPosition() {
 		for(let i = 0; i <= 2500; i++) {
 			const $p = $(`<p class='hiddenDiv${i}'></p>`)
@@ -149,12 +158,8 @@ const game = {
 		this.scoreboard()
 		this.startTime()
 
-//ONLY HERE FOR TESTING: place in  when done
-				$('#main').css({
-			filter: 'blur(1.5px)'
-		})
-		$('#stats').show().text("hi there")
-//ONLY HERE FOR TESTING ^^: place in statRoundDisplay() when done and call in endRound() and endGame() and click event for Pause button. Will be #pause-game -->
+
+
 	},
 	startTime() {
 		this.intervalID = setInterval(() => {
@@ -234,21 +239,32 @@ const game = {
 
 		$p.insertAfter($(`.hiddenDiv${randHiddenDiv}`))
 		// $p.insertBefore($('.hiddenDiv'))
+
+//		//ONLY HERE FOR TESTING:
+		// $('#main').css({
+		// 	filter: 'blur(1.8px)',
+		// 	zIndex: '-1'
+		// })
+		// $('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4>\n\t~ Round ${this.round} Statistics ~\n</h4>`).append(`<h5>Recurring App Users:${this.appUserScore}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users</h5>`).append(`<h6>Get ready to start clock in!</h6>`).append(`<button class="stat-button">Round ${(this.round) + 1}</button>`).show().css({
+		// 	zIndex: '1'
+		// })
+//ONLY HERE FOR TESTING ^^: place in roundStatDisplay() when done and call in endRound() and endGame() and click event for Pause button. Will be #pause-game -->
+
 	},
 	scoreboard() {
-		// Need to get streak to 5 stars and score to 3000 for round 2.
+		// Need to get Rating to 5 stars and score to 3000 for round 2.
 	
 		this.appUserScore
 		this.time
 		// Score Display
 		$('.app-users').text(`Recurring Users: ${this.appUserScore}`)
-		// Streak Display
-		$('.user-streak').text(`Streak: `)
+		// Rating Display
+		$('.user-rating').text(`App Rating: `)
 		// First skill button Display
 		$('#skill-star-comment-clear').text(`\u{1F4AB}`)
 		// Pause button Display
 		$('#pause').text(`||`)
-		this.starStreak()
+		this.starRating()
 		// this.buttonPresentation()
 		if(this.appUserScore <= 0) {
 			$('.app-users').text(`Recurring Users: 0`)
@@ -256,30 +272,31 @@ const game = {
 			clearInterval(this.intervalID)
 			this.gameEnd()
 		}
-		console.log(this.appUserScore);
+		// console.log(this.appUserScore);
 	},
-	starStreak() {
-		if (this.stars >= 10 && this.appUserScore >= 3000) {
+	starRating() {
+		// 4 for testing, 10 for actual.
+		if (this.stars >= 4 && this.appUserScore >= 3000) {
 			this.endRound()
 		} else {
 			if (this.stars <= 1) {
-				// Display this image attr in class .user-streak
-				$(`.user-streak`).text(`Streak: \u{2605} \u{2605} \u{2605} \u{2605} \u{2605}`)
+				// Display this image attr in class .user-rating
+				$(`.user-rating`).text(`App Rating: \u{2605} \u{2605} \u{2605} \u{2605} \u{2605}`)
 			} else if (this.stars >= 2 && this.stars <= 3) {
 				// Display this image
-				$(`.user-streak`).text(`Streak: \u{2B50} \u{2605} \u{2605} \u{2605} \u{2605}`)
+				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2605} \u{2605} \u{2605} \u{2605}`)
 			} else if (this.stars >= 4 && this.stars <= 5) {
 				// Display this image
-				$(`.user-streak`).text(`Streak: \u{2B50} \u{2B50} \u{2605} \u{2605} \u{2605}`)
+				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2B50} \u{2605} \u{2605} \u{2605}`)
 			} else if (this.stars >= 6 && this.stars <= 7) {
 				// Display this image
-				$(`.user-streak`).text(`Streak: \u{2B50} \u{2B50} \u{2B50} \u{2605} \u{2605}`)
+				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2B50} \u{2B50} \u{2605} \u{2605}`)
 			} else if (this.stars >= 8 && this.stars <= 9) {
 				// Display this image
-				$(`.user-streak`).text(`Streak: \u{2B50} \u{2B50} \u{2B50} \u{2B50} \u{2605}`)
+				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2B50} \u{2B50} \u{2B50} \u{2605}`)
 			} else if (this.stars >= 10) {
 				// Display this image
-				$(`.user-streak`).text(`Streak: \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F}`)
+				$(`.user-rating`).text(`App Rating: \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F}`)
 			}
 		}
 
@@ -291,21 +308,24 @@ const game = {
 		console.log(this.round);
 		clearInterval(this.intervalID)
 		console.log('you beat the round');
-		$(`.user-streak`).text(`Streak: \u{1F929} \u{1F929} \u{1F929} \u{1F929} \u{1F929}`)
+		$(`.user-rating`).text(`App Rating: \u{1F929} \u{1F929} \u{1F929} \u{1F929} \u{1F929}`)
 //		// Implement new variable that saves round variables as statistics within an array object then wipes them to create new round
 //			//i.e. push new roundStatHolder to roundStatistics Array. Then can be called with roundStatistics[this.round-1]
 		// Round variables held in here, pushed into roundStatistics, then erased for next round.
 		const roundStatHolder = [{
 			roundIs: this.round/*this.round*/,
+			appUserScoreIs: this.appUserScore,
 			bullyAccountsBannedIs: this.bullyAccountsBanned/*this.*/,
-		}, {
-
+			wrongUsersBannedIs: this.wrongUsersBanned
 		}]
 		console.log(roundStatHolder);
-		this.roundStatistics.push(roundStatHolder)
+		this.roundStatistics.push(roundStatHolder[0])
 		console.log(this.roundStatistics[this.round-1]);
+		console.log(this.roundStatistics[this.round-1].appUserScoreIs);
 
-		// this.statRoundDisplay()
+	
+
+		this.roundStatDisplay()
 
 		// this.newRound()
 	},
@@ -315,19 +335,44 @@ const game = {
 		//Next round button pressed === ture {this.pauseRound++}
 			// placed for now
 			// this.pauseRound++
+		console.log('Hell0, I work!');
+
+	$('#main').css({
+			filter: 'blur(0px)',
+			zIndex: '1'
+		})
+		$('#stats').hide().css({
+			zIndex: '-1'
+		})
+
 	},
 	gameEnd() {
 		this.round++
 		console.log("WHAT A Shame");
-		$(`.user-streak`).text(`Losing Streak: \u{26B0} \u{FE0F}`) //⚰️
+		$(`.user-rating`).text(`Filed Bankrupt: \u{26B0} \u{FE0F}`) //⚰️
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
 	
-	// this.statRoundDisplay()
+	this.roundStatDisplay()
 
 	},
 	// Displays roundstats with next round button displayed. Blurs background(z-index: -1) html.
-	statRoundDisplay() {
+	roundStatDisplay() {
 
+		if (this.round <= 1) {
+			this.totalUsers = this.appUserScore
+		} else {
+			for (let i = 0; i <= this.roundStatistics.length; i++) {
+				this.totalUsers += this.roundStatistics[i].appUserScoreIs
+			}
+		}
+
+		$('#main').css({
+			filter: 'blur(2px)',
+			zIndex: '-1'
+		})
+		$('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4><br/>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.roundStatistics[this.round-1].appUserScoreIs}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tips: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
+			zIndex: '1'
+		})
 
 
 
@@ -335,7 +380,7 @@ const game = {
 	// Pause button click event that displays how to play while paused:
 	pauseGame() {
 	// (i)
-	// Similar to statRoundDisplay(), but displays how to play (i)info.
+	// Similar to roundStatDisplay(), but displays how to play (i)info.
 	// alt: display stats, roundStatHolder variable will have to be pushed at beginning of game to be displayed at any moment.
 	// Also change css for pause button(w/ emoji) to play button(w/ emoji)
 
@@ -383,12 +428,12 @@ game.hiddenDivPosition()
 
 ////Event Listeners
 // Comment truthy/ falsy reveal
-// try: #main w/ e.target try: .comment w/ e.currentTarget
 $('#main').on('click', (e) => {
 	console.log(e.currentTarget);
 	// Previously e.target
 	if (game.round === game.pauseRound) {
 		const $thisComment = $(e.target)
+//		// To prevent from only <p>(comment) being clickable, try inserting whole const $p in <div class='comment'>
 		if ($thisComment.hasClass('comment')) {
 			game.revealTruthy($thisComment)
 		}
@@ -411,6 +456,14 @@ $('#pause').on('click', (e) => {
 	game.pauseGame()
 
 
+})
+
+// Button to start next round
+$('#stats').on('click', (e) => {
+	console.log(e.target)	
+	if ($(e.target).hasClass('stat-button')) {
+		game.newRound()
+	}
 })
 
 
