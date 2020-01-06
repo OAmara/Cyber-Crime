@@ -139,6 +139,7 @@ const game = {
 
 	// roundStatHolder array containing each round statistic to display when paused and next round screen.
 	roundStatistics: [],
+	// refer to roundStatDisplay()
 	totalUsers: 0,
 	hiddenDivPosition() {
 		for(let i = 0; i <= 2500; i++) {
@@ -162,6 +163,7 @@ const game = {
 
 	},
 	startTime() {
+
 		this.intervalID = setInterval(() => {
 			
 			// Will be used for logic like how frequently to display new comment...
@@ -251,7 +253,7 @@ const game = {
 //ONLY HERE FOR TESTING ^^: place in roundStatDisplay() when done and call in endRound() and endGame() and click event for Pause button. Will be #pause-game -->
 
 	},
-	scoreboard() {
+	scoreboard(buttonPause) {
 		// Need to get Rating to 5 stars and score to 3000 for round 2.
 	
 		this.appUserScore
@@ -266,11 +268,14 @@ const game = {
 		$('#pause').text(`||`)
 		this.starRating()
 		// this.buttonPresentation()
-		if(this.appUserScore <= 0) {
+		if (this.appUserScore <= 0) {
 			$('.app-users').text(`Recurring Users: 0`)
 //			// ClearInterval() goes here
 			clearInterval(this.intervalID)
 			this.gameEnd()
+		}
+		if (buttonPause === 1) {
+			this.pauseGame()
 		}
 		// console.log(this.appUserScore);
 	},
@@ -332,47 +337,55 @@ const game = {
 	newRound() {
 //		// USE css to clear screen within divs then start with this.hiddenDivPosition() instead
 		// this.startTime()
-		//Next round button pressed === ture {this.pauseRound++}
-			// placed for now
-			// this.pauseRound++
 		console.log('Hell0, I work!');
 
 	$('#main').css({
 			filter: 'blur(0px)',
 			zIndex: '1'
-		})
-		$('#stats').hide().css({
-			zIndex: '-1'
-		})
+	})
+	$('#stats').hide().css({
+		zIndex: '-1'
+	})
+	$('#pause').show()
 
+		// this.comments = []
+		this.stars = 0
+		this.wrongUsersBanned = 0
+
+
+		this.pauseRound++
+		this.startTime()
 	},
-	gameEnd() {
+	gameEnd() { // MAKE IT SO WHEN YOU LOSE YOU CAN START FROM LAST ROUND STATS
 		this.round++
 		console.log("WHAT A Shame");
 		$(`.user-rating`).text(`Filed Bankrupt: \u{26B0} \u{FE0F}`) //⚰️
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
 	
-	this.roundStatDisplay()
+	// this.roundStatDisplay()
 
 	},
 	// Displays roundstats with next round button displayed. Blurs background(z-index: -1) html.
 	roundStatDisplay() {
 
-		if (this.round <= 1) {
-			this.totalUsers = this.appUserScore
-		} else {
-			for (let i = 0; i <= this.roundStatistics.length; i++) {
-				this.totalUsers += this.roundStatistics[i].appUserScoreIs
-			}
-		}
+		// Might Need for future math use
+		// if (this.round <= 1) {
+		// 	this.totalUsers = this.appUserScore
+		// } else {
+		// 	for (let i = 0; i <= this.roundStatistics.length; i++) {
+		// 		this.totalUsers += this.roundStatistics[i].appUserScoreIs
+		// 	}
+		// }
 
 		$('#main').css({
 			filter: 'blur(2px)',
 			zIndex: '-1'
 		})
-		$('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4><br/>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.roundStatistics[this.round-1].appUserScoreIs}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tips: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
+//Bug	// Turn all tags into html and jQUery the text into them.
+		$('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4><br/>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.roundStatistics[this.round-1].appUserScoreIs}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tips: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
 			zIndex: '1'
 		})
+		$('#pause').hide()
 
 
 
@@ -383,7 +396,62 @@ const game = {
 	// Similar to roundStatDisplay(), but displays how to play (i)info.
 	// alt: display stats, roundStatHolder variable will have to be pushed at beginning of game to be displayed at any moment.
 	// Also change css for pause button(w/ emoji) to play button(w/ emoji)
+	
+		if (this.round === this.pauseRound) {
+		clearInterval(this.intervalID)
+		this.pauseRound++
+		this.pauseDisplay(1)
+		} else {
+		this.pauseRound--
+		this.startTime()
+		this.pauseDisplay(2)
+		}
 
+	},
+	pauseDisplay(num) {
+
+		if (num === 1) {
+			$('#main').css({
+				filter: 'blur(2.3px)',
+				// zIndex: '-1'
+			})
+			$('#pause').css({
+				height: '40px',
+				width: '1px',
+				fontSize: '2.5em',
+				padding: '0px 5px',
+				margin: 'auto 5% auto 50%',
+				backgroundColor: 'lightcyan',
+				boxShadow: '0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey',
+				color: 'rgba(150, 150, 150, 0)'
+			}).text('play')
+
+			$('#while-pause').css({
+				zIndex: '2'
+			})
+
+		}
+		if (num === 2) {
+			$('#main').css({
+				filter: 'blur(0px)',
+				// zIndex: '-1'
+			})
+			$('#pause').css({
+				height: '40px',
+				width: '1px',
+				fontSize: '2.5em',
+				padding: '0px 5px',
+				margin: 'auto 5% auto 50%',
+				backgroundColor: 'lightgrey',
+				boxShadow: '0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey',
+				color: 'rgba(150, 150, 150, 0)'
+			})
+
+			$('#while-pause').css({
+				zIndex: '-2'
+			})
+
+		}
 
 	},
 	// this changes display and usage of buttons according to if skill is ready...
@@ -443,7 +511,7 @@ $('#main').on('click', (e) => {
 // Skill1 button to clear all regular comments to sacrifice 2 stars
 $('#skill-star-comment-clear').on('click', (e) => {
 	console.log(e.target);
-	if (game.round === game.pausRound) {
+	if (game.round === game.pauseRound) {
 		const $skillClick = $(e.target)
 		game.buttonPresentation($skillClick)
 	}
@@ -452,9 +520,10 @@ $('#skill-star-comment-clear').on('click', (e) => {
 
 // Pause game button that triggers game.pauseGame()
 $('#pause').on('click', (e) => {
-	
-	game.pauseGame()
-
+	// game.pauseGame()
+	const pauseClick = $(e.target)
+	const semantics = 1
+	game.scoreboard(semantics)
 
 })
 
