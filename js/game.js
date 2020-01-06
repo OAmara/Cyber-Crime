@@ -492,21 +492,20 @@ game.hiddenDivPosition()
 ////Event Listeners
 // Comment truthy/ falsy reveal
 $('#main').on('click', (e) => {
-	console.log(e.currentTarget);
-	// Previously e.target
+
+	// First if for pause functionality.
 	if (game.round === game.pauseRound) {
 		const $clicked = $(e.target)
-//		// To prevent from only <p>(comment) being clickable, try inserting whole const $p in <div class='comment'>
+
 		// if user clicks comment
 		if ($clicked.hasClass('comment')) {
 			game.revealTruthy($clicked)
 		} 
-		// if user clicks name (in this case, comment is parent)
-/*
-		else if (parent is 'comment') {
-			game.revealTruthy(parent of clicked)			
-		} 
-*/	
+		// if user clicks child or comment
+		if ($clicked.hasClass('userComment')) {
+			const childOfParent = $clicked.parent()
+			game.revealTruthy(childOfParent)
+		}
 	}
 })
 

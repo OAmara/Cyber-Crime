@@ -17,7 +17,7 @@ body {
 #stats {
 	z-index: -1;
 	/*position probably better as absolute*/
-	position: absolute; 
+	position: fixed; 
 	width: 900px;
 	height: 700px;
 	text-align: center;
