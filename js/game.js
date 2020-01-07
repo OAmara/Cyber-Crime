@@ -60,7 +60,7 @@ class Comment {
 		if(this.bully === false) {
 			$whatWasClicked.addClass('revealedFalse').hide(5000).text(`${this.user} wrote "I'm giving you a bad rating"`).css('fontSize', '0.85em')
 //			// Place all scoring within new method in game
-			game.appUserScore = Math.ceil(game.appUserScore * 0.75)
+			game.appUserScore = Math.ceil(game.appUserScore * 0.85)
 
 			// Determines Rating for next round
 			if (game.stars > 0) {
@@ -124,6 +124,7 @@ const game = {
 	appUserScore: 1000,
 	// Just for visualization
 	time: 0,
+	timer: 0,
 	stars: 0,
 	// Total correct clicks
 	bullyAccountsBanned: 0,
@@ -141,6 +142,7 @@ const game = {
 	roundStatistics: [],
 	// refer to roundStatDisplay()
 	totalUsers: 0,
+	youreFired: false,
 	hiddenDivPosition(num) {
 		for(let i = 0; i <= 2500; i++) {
 			const $p = $(`<p class='hiddenDiv${i}'></p>`)
@@ -148,8 +150,8 @@ const game = {
 			$p.css({
 				width: '2.5px',
 				height: '2.5px',
-				// Only visible for testing purposes
-				backgroundColor: 'rgba(245, 245, 245, .35',
+				// Only visible for testing purposes: change transparency to view
+				backgroundColor: 'rgba(245, 245, 245, 0',
 				display: 'inline-block',
 				margin: '0.2% 0.2%'
 			})
@@ -172,6 +174,7 @@ const game = {
 			// Will be used for logic like how frequently to display new comment...
 			this.time++
 			// console.log(this.time);
+			this.timer += 2
 			
 			// Have addCOmment() pass an argument to create new random instantiated comment.
 			this.appUserScore
@@ -192,10 +195,12 @@ const game = {
 				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
 //	used-->		// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
-					this.appUserScore -= Math.ceil(this.appUserScore * 0.0038)
+					this.appUserScore -= Math.ceil(this.appUserScore * 0.00488)
 					this.scoreboard()
 					this.appUserScore--
 				} else{
+					// this.appUserScore += Math.ceil(this.appUserScore * 0.009)
+					this.scoreboard()
 					this.appUserScore++
 				}
 			}
@@ -251,6 +256,12 @@ const game = {
 	},
 	scoreboard(buttonPause) {
 		// Need to get Rating to 5 stars and score to 3000 for round 2.
+		if (buttonPause === 'end') {
+			const $tooBad = $('<h1>Collect your things.</h1>')
+			$('#main').empty()
+			$('#main').append($('<h2>Collect your things</h2>'))
+			console.log($tooBad);
+		}
 	
 		this.appUserScore
 		this.time
@@ -264,10 +275,18 @@ const game = {
 		$('#pause').text(`||`)
 		this.starRating()
 		// this.buttonPresentation()
-		if (this.appUserScore <= 0) {
+		if (this.round > 0){
+			if (this.appUserScore <= (this.roundStatistics[this.round-1].appUserScoreIs * 0.5)) {
 			$('.app-users').text(`Recurring Users: 0`)
 //			// ClearInterval() goes here
 			clearInterval(this.intervalID)
+			this.youreFired = true
+			this.gameEnd()
+			}
+		} else if (this.appUserScore <= 500) {
+			$('.app-users').text(`Recurring Users: 0`)
+			clearInterval(this.intervalID)
+			this.youreFired = true
 			this.gameEnd()
 		}
 		if (buttonPause === 1) {
@@ -277,25 +296,30 @@ const game = {
 	},
 	starRating() {
 		// 4 for testing, 10 for actual.
-		if (this.stars >= 2 && this.appUserScore >= 3000) {
+		if (this.stars >= 6 && this.appUserScore >= 3000) {
 			this.endRound()
 		} else {
-			if (this.stars <= 1) {
+			if (this.stars <= 0) {
 				// Display this image attr in class .user-rating
 				$(`.user-rating`).text(`App Rating: \u{2605} \u{2605} \u{2605} \u{2605} \u{2605}`)
-			} else if (this.stars >= 2 && this.stars <= 3) {
+			//originally: (this.stars >= 2 && this.stars <= 3)
+			} else if (this.stars === 1) {
 				// Display this image
 				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2605} \u{2605} \u{2605} \u{2605}`)
-			} else if (this.stars >= 4 && this.stars <= 5) {
+			// originally: (this.stars >= 4 && this.stars <= 5)
+			} else if (this.stars === 2) {
 				// Display this image
 				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2B50} \u{2605} \u{2605} \u{2605}`)
-			} else if (this.stars >= 6 && this.stars <= 7) {
+			// originally: (this.stars >= 6 && this.stars <= 7)
+			} else if (this.stars === 3) {
 				// Display this image
 				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2B50} \u{2B50} \u{2605} \u{2605}`)
-			} else if (this.stars >= 8 && this.stars <= 9) {
+			// originally: (this.stars >= 8 && this.stars <= 9)
+			} else if (this.stars === 4) {
 				// Display this image
 				$(`.user-rating`).text(`App Rating: \u{2B50} \u{2B50} \u{2B50} \u{2B50} \u{2605}`)
-			} else if (this.stars >= 10) {
+			// originally: (this.stars >= 10)
+			} else if (this.stars === 5) {
 				// Display this image
 				$(`.user-rating`).text(`App Rating: \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F}`)
 			}
@@ -333,7 +357,6 @@ const game = {
 	newRound() {
 //		// USE css to clear screen within divs then start with this.hiddenDivPosition() instead
 		// this.startTime()
-		console.log('Hell0, I work!');
 
 	$('#main').css({
 			filter: 'blur(0px)',
@@ -347,15 +370,20 @@ const game = {
 		// this.comments = []
 		this.stars = 0
 		this.wrongUsersBanned = 0
-
+		this.timer = 0
 
 		this.pauseRound++
 		this.startTime()
 	},
 	gameEnd() { // MAKE IT SO WHEN YOU LOSE YOU CAN START FROM LAST ROUND STATS
-		this.round++
+		this.pauseRound++
 		console.log("WHAT A Shame");
 		$(`.user-rating`).text(`Filed Bankrupt: \u{26B0} \u{FE0F}`) //⚰️
+		$('#main').empty().text(`You're Fired!`).css({
+			textAlign: 'center',
+			fontSize: '5em',
+			margin: 'auto'
+		})
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
 	
 	// this.roundStatDisplay()
@@ -379,8 +407,13 @@ const game = {
 			zIndex: '-1'
 		})
 //Bug	// Turn all tags into html and jQUery the text into them.
+					console.log(this.timer);
+			console.log(((Math.floor(this.timer))*0.1));
+			console.log(((Math.floor(this.timer))/10));
+			console.log(((Math.floor(this.timer))/(10)));
+
 		$('#stats').empty()
-		$('#stats').append(`<h4>Do I hear Revenue! Great Job on Keeping Your Recurring Users by Banning the Internet Trolls & Cyber Bullies.</h4>`).append(`<h4>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tip: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
+		$('#stats').append(`<h4>Do I hear Revenue! Great Job on Keeping Your Recurring Users by Banning the Internet Trolls & Cyber Bullies.</h4>`).append(`<h4>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>It took you ${((Math.floor(this.timer))/10)}s to finish your shift.</h5>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tip: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
 			zIndex: '2',
 			filter: 'blur(0px)'
 		})
@@ -433,6 +466,7 @@ const game = {
 				color: 'rgba(150, 150, 150, 0)'
 			}).text('play')
 
+			$('.pause-stars').text(`\u{2B50} \u{2B50} \u{2B50} \u{2605} \u{2605}`)
 			$('#while-pause').css({
 				zIndex: '4'
 			})
@@ -539,9 +573,13 @@ $('#skill-star-comment-clear').on('click', (e) => {
 // Pause game button that triggers game.pauseGame()
 $('#pause').on('click', (e) => {
 	// game.pauseGame()
-	const pauseClick = $(e.target)
-	const semantics = 1
-	game.scoreboard(semantics)
+	if (game.youreFired === false) {
+		const pauseClick = $(e.target)
+		const semantics = 1
+		game.scoreboard(semantics)
+	} else if (game.youreFired === true) {
+		game.scoreboard('end')
+	}
 
 })
 

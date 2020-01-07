@@ -48,8 +48,8 @@ body {
 
 #while-pause {
 	z-index: -2;
-	/*position probably better as absolute*/
-	position: fixed; 
+	/*try fixed|| try visibility*/
+	position: absolute; 
 	width: 850px;
 	height: 700px;
 	text-align: center;
@@ -61,11 +61,37 @@ body {
 	text-shadow: 2px 2px 5px grey;
 }
 #while-pause h6{
-	font-size: 1.5em;
+	font-size: 1.3em;
+	text-align: left;
+}
+#while-pause h3 {
+	font-size: 1.3em;
+	text-align: left;
+	margin-top: 0;
+}
+/*Nothing past h6?*/
+#while-pause h5 {
+	font-size: 1.3em;
+	text-align: left;
+	margin-top: 0px;
+	/*display: inline-block;*/
+}
+.comment-example {
+	text-align: left;
+	font-size: 0.7em;
+	border: 1px solid grey;
+	border-radius: 100px;
+	display: inline-block;
+	padding: 0 10px;
+	margin-bottom: 0px;
+}
+.pause-stars {
+	text-align: left;
+	margin-bottom: 0;
 }
 .intro-story {
-	font-size: 0.9em;
-	text-align: left;
+	font-size: 1.2em;
+	/*text-align: left;*/
 }
 /*user score displayed on top of main div*/
 .app-users {
