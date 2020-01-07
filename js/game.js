@@ -259,7 +259,7 @@ const game = {
 		if (buttonPause === 'end') {
 			const $tooBad = $('<h1>Collect your things.</h1>')
 			$('#main').empty()
-			$('#main').append($('<h2>Collect your things</h2>'))
+			$('#main').append($tooBad)
 			console.log($tooBad);
 		}
 	
@@ -379,7 +379,7 @@ const game = {
 		this.pauseRound++
 		console.log("WHAT A Shame");
 		$(`.user-rating`).text(`Filed Bankrupt: \u{26B0} \u{FE0F}`) //⚰️
-		$('#main').empty().text(`You're Fired!`).css({
+		$('#main').empty().append(`<h4>You're Fired!</h4>`).css({
 			textAlign: 'center',
 			fontSize: '5em',
 			margin: 'auto'
