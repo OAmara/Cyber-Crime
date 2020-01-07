@@ -141,7 +141,7 @@ const game = {
 	roundStatistics: [],
 	// refer to roundStatDisplay()
 	totalUsers: 0,
-	hiddenDivPosition() {
+	hiddenDivPosition(num) {
 		for(let i = 0; i <= 2500; i++) {
 			const $p = $(`<p class='hiddenDiv${i}'></p>`)
 				// `class='${i}'></p>`)
@@ -149,15 +149,18 @@ const game = {
 				width: '2.5px',
 				height: '2.5px',
 				// Only visible for testing purposes
-				backgroundColor: 'rgba(245, 245, 245, .95',
+				backgroundColor: 'rgba(245, 245, 245, .35',
 				display: 'inline-block',
 				margin: '0.2% 0.2%'
 			})
 			$p.appendTo($('#main'))
 
 		}
-		this.scoreboard()
+		if (num != true) {
 		this.startTime()
+		}
+		this.intervalID = -1
+		this.scoreboard()
 
 
 
@@ -274,7 +277,7 @@ const game = {
 	},
 	starRating() {
 		// 4 for testing, 10 for actual.
-		if (this.stars >= 4 && this.appUserScore >= 3000) {
+		if (this.stars >= 2 && this.appUserScore >= 3000) {
 			this.endRound()
 		} else {
 			if (this.stars <= 1) {
@@ -373,39 +376,48 @@ const game = {
 
 		$('#main').css({
 			filter: 'blur(2.1px)',
-			// zIndex: '-1'
+			zIndex: '-1'
 		})
 //Bug	// Turn all tags into html and jQUery the text into them.
 		$('#stats').empty()
-		$('#stats').append(`<h4>Do I hear Revenue! Great Job on keeping your Recurring Users happy by banning the internet trolls.</h4>`).append(`<h4><br/>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tips: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
-			zIndex: '2'
+		$('#stats').append(`<h4>Do I hear Revenue! Great Job on Keeping Your Recurring Users by Banning the Internet Trolls & Cyber Bullies.</h4>`).append(`<h4>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}`).append(`<h5>Tip: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
+			zIndex: '2',
+			filter: 'blur(0px)'
 		})
 		$('#pause').hide()
 
 
 
 	},
-	// Pause button click event that displays how to play while paused:
+	// Determines to pause or play game
 	pauseGame() {
 	// (i)
 	// Similar to roundStatDisplay(), but displays how to play (i)info.
 	// alt: display stats, roundStatHolder variable will have to be pushed at beginning of game to be displayed at any moment.
 	// Also change css for pause button(w/ emoji) to play button(w/ emoji)
 	
-		if (this.round === this.pauseRound) {
-		clearInterval(this.intervalID)
-		this.pauseRound++
-		this.pauseDisplay(1)
-		} else {
-		this.pauseRound--
-		this.startTime()
-		this.pauseDisplay(2)
-		}
-
+		if (this.intervalID != -1) {
+			if (this.round === this.pauseRound) {
+			clearInterval(this.intervalID)
+			console.log(this.intervalID);
+			this.pauseRound++
+			this.pauseDisplay(1)
+			} else {
+			this.pauseRound--
+			console.log(this.intervalID);
+			this.pauseDisplay(2)
+			this.startTime()
+			}
+		} else if (this.intervalID === -1) {
+			this.intervalID = 0
+			this.pauseDisplay(2)
+			this.startTime()
+		}	
 	},
+	// From click event that shows/ hides how pause button looks and how to play div while paused:
 	pauseDisplay(num) {
 
-		if (num === 1) {
+		if (num === 1 || num === 3) {
 			$('#main').css({
 				filter: 'blur(2.3px)',
 				// zIndex: '-1'
@@ -424,7 +436,12 @@ const game = {
 			$('#while-pause').css({
 				zIndex: '4'
 			})
-
+			if (num === 3) {
+				this.hiddenDivPosition(true)
+			} else {
+				$('.intro-pause').text('How To Play:')
+				$('.intro-story').remove()
+			}
 		}
 		if (num === 2) {
 			$('#main').css({
@@ -441,7 +458,6 @@ const game = {
 				boxShadow: '0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey',
 				color: 'rgba(150, 150, 150, 0)'
 			})
-
 			$('#while-pause').css({
 				zIndex: '-4'
 			})
@@ -486,7 +502,8 @@ const game = {
 
 
 }
-game.hiddenDivPosition()
+game.pauseDisplay(3)
+// game.hiddenDivPosition()
 // game.addComment()
 
 ////Event Listeners

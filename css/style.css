@@ -17,15 +17,18 @@ body {
 #stats {
 	z-index: -1;
 	/*position probably better as absolute*/
-	position: fixed; 
+	position: absolute; 
 	width: 900px;
 	height: 700px;
 	text-align: center;
 	margin: 1px 18%;
 	font-size: 2em;
 	font-weight: 800;
-	display: block;
+	/*display: inline-block;*/
 	text-shadow: 2px 2px 5px grey;
+/*	display: flex;
+	align-content: center;
+	justify-content: center;*/
 }
 #stats h5{
 	text-align: left;
@@ -47,16 +50,23 @@ body {
 	z-index: -2;
 	/*position probably better as absolute*/
 	position: fixed; 
-	width: 900px;
+	width: 850px;
 	height: 700px;
 	text-align: center;
-	margin: 1px 18%;
-	font-size: 2em;
+	margin: 0px 11%;
+	/*padding: 0px;*/
+	/*font-size: 2em;*/
 	font-weight: 800;
-	display: block;
+	/*display: inline-block;*/
 	text-shadow: 2px 2px 5px grey;
 }
-
+#while-pause h6{
+	font-size: 1.5em;
+}
+.intro-story {
+	font-size: 0.9em;
+	text-align: left;
+}
 /*user score displayed on top of main div*/
 .app-users {
 	display: inline;
