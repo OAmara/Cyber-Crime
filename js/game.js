@@ -134,7 +134,6 @@ const game = {
 	round: 0,
 	pauseRound: 0,
 
-
 	// roundStatHolder array containing each round statistic to display when paused and next round screen.
 	roundStatistics: [],
 	// refer to roundStatDisplay()
@@ -163,9 +162,6 @@ const game = {
 		// For #pause click event use to start game
 		this.intervalID = -1
 		this.scoreboard()
-
-
-
 	},
 	startTime() {
 
@@ -207,10 +203,9 @@ const game = {
 				}
 			}
 
-
 			this.scoreboard()
 //		// Keep very closely around 200
-		}, 200)
+		}, 200) // IF this is not 200, need to change this.timer & this.totalTimer to reflect proper time.
 	},
 	addComment() {
 		// instantiate a Comment
@@ -244,7 +239,6 @@ const game = {
 		// })
 		// console.log($span);
 
-//		// FIX: span not clickable since seperate from p comment class.
 		const $p = $(`<p class='comment'><span class='userComment'>user: ${this.comments[this.comments.length-1].user}</span>"${this.comments[this.comments.length-1].string}"</p>`)
 
 		$p.data('whichComment', this.comments.length-1)
@@ -253,7 +247,6 @@ const game = {
 		// $p.insertBefore($('.hiddenDiv'))
 
 //		//Place roundStatDisplay() content HERE FOR TESTING:
-
 
 	},
 	scoreboard(buttonPause) {
@@ -292,7 +285,6 @@ const game = {
 		if (buttonPause === 1) {
 			this.pauseGame()
 		}
-		// console.log(this.appUserScore);
 	},
 	starRating() {
 		// 4 for testing, 10 for actual.
@@ -324,7 +316,6 @@ const game = {
 				$(`.user-rating`).text(`App Rating: \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F} \u{1F31F}`)
 			}
 		}
-
 	},
 	endRound() {
 		// Logic for pausing round until starting next round.
@@ -334,8 +325,8 @@ const game = {
 		clearInterval(this.intervalID)
 		console.log('you beat the round');
 		$(`.user-rating`).text(`App Rating: \u{1F929} \u{1F929} \u{1F929} \u{1F929} \u{1F929}`)
-//		// Implement new variable that saves round variables as statistics within an array object then wipes them to create new round
-//			//i.e. push new roundStatHolder to roundStatistics Array. Then can be called with roundStatistics[this.round-1]
+		
+		// New variable that saves round variables as statistics within an array.
 		// Round variables held in here, pushed into roundStatistics, then erased for next round.
 		const roundStatHolder = [{
 			roundIs: this.round/*this.round*/,
@@ -348,9 +339,7 @@ const game = {
 		console.log(this.roundStatistics[this.round-1]);
 		console.log(this.roundStatistics[this.round-1].appUserScoreIs);
 
-
 		this.roundStatDisplay()
-
 		// this.newRound()
 	},
 	// Click event for button that displays when round is won.
@@ -363,8 +352,8 @@ const game = {
 			// zIndex: '1'
 	})
 	$('#stats').hide().css({
-		zIndex: '-1'
-	})
+			zIndex: '-1'
+		})
 	$('#pause').show()
 
 		// this.comments = []
@@ -410,12 +399,11 @@ const game = {
 			filter: 'blur(2.1px)',
 			zIndex: '-1'
 		})
-//Bug	// Turn all tags into html and jQUery the text into them.
+		//// Timer Testing:
 			// 		console.log(this.timer);
 			// console.log(((Math.floor(this.timer))*0.1));
 			// console.log(((Math.floor(this.timer))/10));
 			// console.log(((Math.floor(this.timer))/(10)));
-
 		$('#stats').empty()
 		$('#stats').append(`<h4>Do I hear Revenue! Great Job on Keeping Your Recurring Users by Banning the Internet Trolls & Cyber Bullies.</h4>`).append(`<h4>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>- It took you ${((Math.floor(this.timer))/10)}s to finish your shift.</h5>`).append(`<h5>- Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>- New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>- Accounts Banned: ${this.bullyAccountsBanned}</h5>`).append(`<h5>Tip: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
 			zIndex: '2',
@@ -493,12 +481,13 @@ const game = {
 				// 		color: 'rgba(150, 150, 150, 0.8)'
 		  //          	})
     //       	});
-
 			$('.pause-stars').text(`\u{2B50} \u{2B50} \u{2B50} \u{2605} \u{2605}`)
 			$('#while-pause').css({
-				zIndex: '4',
-				visibility: 'visible'
-			})
+					zIndex: '4',
+					visibility: 'visible'
+				})
+
+			// Changes from welcome story to how to play after starting.
 			if (num === 3) {
 
 				this.hiddenDivPosition(true)
@@ -548,15 +537,14 @@ const game = {
 		 //           	}).text('||')
    //        	});
 			$('#while-pause').css({
-				zIndex: '-4',
-				visibility: 'hidden'
-			})
-
+					zIndex: '-4',
+					visibility: 'hidden'
+				})
 		}
 
 	},
 	// this changes display and usage of buttons according to if skill is ready...
-	// have passing arg look like: buttonPresentation(null, skill2, null)
+//	// have passing arg look like: buttonPresentation(null, skill2, null)
 	buttonPresentation(skill1, skill2, skill3) { 
 		// Skill: clear all regular comments from screen. Costs 2 stars
 			// cooldown?
@@ -589,10 +577,9 @@ const game = {
 		console.log(dataComment)
 	}
 
-
 }
-//Initiates game display, then game officially starts from #pause click event.
-game.pauseDisplay(3) //Only Displays, #Pause button click event triggers game start.
+//Initiates game display, then #Pause button click event triggers game start.
+game.pauseDisplay(3)
 
 // game.hiddenDivPosition()
 // game.addComment()
