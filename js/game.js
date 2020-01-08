@@ -388,7 +388,7 @@ const game = {
 			$('#main').append('<h6>Did not even last a day.</h6>').append('<p>Clear out your desk.</p>')
 		}
 		if (this.round > 0) {
-			$('#main').append(`<h5>\n\t~ Progress ~\n</h5>`).append(`<h6>You worked a total of ${((Math.floor(this.totalTimer))/10)}s and made it to day ${this.round}. </h6>`).append(`<h6><br/>Total Users: ${this.roundStatistics[this.round-1].appUserScoreIs}</h6>`).append(`<h6><br/>Accounts Banned: ${this.bullyAccountsBanned}<h6>`).append(`<h6><br/>Horrible! You banned ${this.wrongUsersBanned} falsely reported users.</h6>`).append(`<h6>\u{2B07}File for Unemployment?\u{2B07}</h6>`).append(`<button class="stat-button">Good Luck.</button>`)
+			$('#main').append(`<h5>\n\t~ Progress ~\n</h5>`).append(`<h6>You worked a total of ${((Math.floor(this.totalTimer))/10)}s and made it to day ${this.round}. </h6>`).append(`<h6><br/>- Total Users: ${this.roundStatistics[this.round-1].appUserScoreIs}</h6>`).append(`<h6><br/>- Accounts Banned: ${this.bullyAccountsBanned}<h6>`).append(`<h6><br/>- Horrible! You banned ${this.wrongUsersBanned} falsely reported users.</h6>`).append(`<h6>\u{2B07}File for Unemployment?\u{2B07}</h6>`).append(`<button class="stat-button">Good Luck.</button>`)
 		}
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
 
@@ -417,7 +417,7 @@ const game = {
 			// console.log(((Math.floor(this.timer))/(10)));
 
 		$('#stats').empty()
-		$('#stats').append(`<h4>Do I hear Revenue! Great Job on Keeping Your Recurring Users by Banning the Internet Trolls & Cyber Bullies.</h4>`).append(`<h4>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>It took you ${((Math.floor(this.timer))/10)}s to finish your shift.</h5>`).append(`<h5>Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>Accounts Banned: ${this.bullyAccountsBanned}</h5>`).append(`<h5>Tip: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
+		$('#stats').append(`<h4>Do I hear Revenue! Great Job on Keeping Your Recurring Users by Banning the Internet Trolls & Cyber Bullies.</h4>`).append(`<h4>\n\t~ Day ${this.round} Statistics ~\n</h4>`).append(`<h5>- It took you ${((Math.floor(this.timer))/10)}s to finish your shift.</h5>`).append(`<h5>- Total Recurring Users: ${this.appUserScore}</h5>`).append(`<h5>- New Users from Day ${this.round}: ${this.totalUsers}</h5>`).append(`<h5>- Accounts Banned: ${this.bullyAccountsBanned}</h5>`).append(`<h5>Tip: Be Careful! You accidentally banned ${this.wrongUsersBanned} falsely reported users. Each one you ban reduces your Users and Ratings</h5>`).append(`<h6><br/>\nGet ready to clock in!</h6>`).append(`<h6>\u{2B07}</h6`).append(`<button class="stat-button">Day ${(this.round) + 1}</button>`).append(`<h6>\u{2B06}</h6>`).show().css({
 			zIndex: '2',
 			filter: 'blur(0px)'
 		})
@@ -592,7 +592,7 @@ const game = {
 
 }
 //Initiates game display, then game officially starts from #pause click event.
-game.pauseDisplay(3)
+game.pauseDisplay(3) //Only Displays, #Pause button click event triggers game start.
 
 // game.hiddenDivPosition()
 // game.addComment()
