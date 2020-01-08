@@ -74,7 +74,7 @@ class Comment {
 		}
 		if(this.bully === true) {
 			// MAY be better to use .classList or .className , .remove() then .addclass()
-			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Suspended Account: ${this.user}`).css('fontSize', '0.85em')
+			$whatWasClicked.addClass('revealedTrue').hide(3500).text(`\u{1F44D} Banned Account: ${this.user}`).css('fontSize', '0.85em')
 
 			// Place all scoring within new method in game		
 			if(game.appUserScore > 0) {
@@ -152,9 +152,12 @@ const game = {
 			$p.appendTo($('#main'))
 
 		}
+		// not currently used
 		if (num != true) {
-		this.startTime()
+			this.startTime()
 		}
+
+		// For #pause click event use to start game
 		this.intervalID = -1
 		this.scoreboard()
 
@@ -258,25 +261,23 @@ const game = {
 			console.log($tooBad);
 		}
 	
-		this.appUserScore
-		this.time
 		// Score Display
 		$('.app-users').text(`Recurring Users: ${this.appUserScore}`)
 		// Rating Display
 		$('.user-rating').text(`App Rating: `)
 		// First skill button Display
 		$('#skill-star-comment-clear').text(`\u{1F4AB}`)
-		// Pause button Display
-		$('#pause').text(`||`)
+
 		this.starRating()
+
 		// this.buttonPresentation()
 		if (this.round > 0){
 			if (this.appUserScore <= (this.roundStatistics[this.round-1].appUserScoreIs * 0.5)) {
-			$('.app-users').text(`Recurring Users: 0`)
-//			// ClearInterval() goes here
-			clearInterval(this.intervalID)
-			this.youreFired = true
-			this.gameEnd()
+				$('.app-users').text(`Recurring Users: 0`)
+//				// ClearInterval() goes here
+				clearInterval(this.intervalID)
+				this.youreFired = true
+				this.gameEnd()
 			}
 		} else if (this.appUserScore <= 500) {
 			$('.app-users').text(`Recurring Users: 0`)
@@ -412,8 +413,6 @@ const game = {
 		})
 		$('#pause').hide()
 
-
-
 	},
 	// Determines to pause or play game
 	pauseGame() {
@@ -448,22 +447,50 @@ const game = {
 				filter: 'blur(2.3px)',
 				// zIndex: '-1'
 			})
-			$('#pause').css({
-				height: '40px',
-				width: '1px',
-				fontSize: '2.5em',
-				padding: '0px 5px',
-				margin: 'auto 5% auto 50%',
-				backgroundColor: 'lightcyan',
-				boxShadow: '0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey',
-				color: 'rgba(150, 150, 150, 0)'
-			}).text('play')
+ 			$('#pause').css({
+						height: '68px',
+						width: 'auto',
+						fontSize: '3.5em',
+						padding: '0px 0px',
+						margin: 'auto 5% auto 30%',
+						backgroundColor: 'transparent',
+						boxShadow: '0px 0px 5px 1px transparent, 20px 0px 0px 0px transparent, 20px 0px 5px 1px transparent',
+						color: 'rgba(150, 150, 150, 0.8)',
+						outlineColor: 'grey',
+						outlineStyle: 'inset'
+            		}).text('\u{25B6}')
+ 				// Issues with with clicking, .mouseout() changing to previous style before click
+ 			// $('#pause').hover(function() {
+    //         		$(this).css({
+				// 		height: '50px',
+				// 		width: '50px',
+				// 		fontSize: '3.8em',
+				// 		padding: '0px 5px',
+				// 		margin: 'auto 5% auto 50%',
+				// 		backgroundColor: 'transparent',
+				// 		boxShadow: '0px 0px 5px 1px transparent, 20px 0px 0px 0px transparent, 20px 0px 5px 1px whitesmoke',
+				// 		color: 'rgba(150, 150, 150, 0.8)'
+    //         		}).text('\u{25B6}')
+    //       	}).mouseout(function(){
+    //           		$(this).css({
+    //           			height: '50px',
+				// 		width: '50px',
+				// 		fontSize: '2.8em',
+				// 		padding: '0px 5px',
+				// 		margin: 'auto 5% auto 50%',
+				// 		backgroundColor: 'transparent',
+				// 		boxShadow: '0px 0px 5px 1px transparent, 20px 0px 0px 0px transparent, 20px 0px 5px 1px whitesmoke',
+				// 		color: 'rgba(150, 150, 150, 0.8)'
+		  //          	})
+    //       	});
 
 			$('.pause-stars').text(`\u{2B50} \u{2B50} \u{2B50} \u{2605} \u{2605}`)
 			$('#while-pause').css({
-				zIndex: '4'
+				zIndex: '4',
+				visibility: 'visible'
 			})
 			if (num === 3) {
+
 				this.hiddenDivPosition(true)
 			} else {
 				$('.intro-pause').text('How To Play:')
@@ -475,18 +502,44 @@ const game = {
 				filter: 'blur(0px)',
 				// zIndex: '-1'
 			})
-			$('#pause').css({
-				height: '40px',
+ 			$('#pause').css({
+					height: '40px',
 				width: '1px',
 				fontSize: '2.5em',
 				padding: '0px 5px',
-				margin: 'auto 5% auto 50%',
+				margin: 'auto 5% auto 30%',
 				backgroundColor: 'lightgrey',
 				boxShadow: '0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey',
-				color: 'rgba(150, 150, 150, 0)'
-			})
+				color: 'rgba(150, 150, 150, 0)',
+				outline: 'none'
+			}).text('||')
+ 			// Issues with with clicking, .mouseout() changing to previous style before click
+ 		// 	$('#pause').hover(function() {
+   //          		$(this).css({
+			// 		height: '40px',
+			// 	width: '1px',
+			// 	fontSize: '2.5em',
+			// 	padding: '0px 5px',
+			// 	margin: 'auto 5% auto 50%',
+			// 	backgroundColor: 'lightgrey',
+			// 	boxShadow: '0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey',
+			// 	color: 'rgba(150, 150, 150, 0)'
+			// }).text('||')
+   //        	}).mouseout(function(){
+   //            		$(this).css({
+			// 		height: '40px',
+			// 	width: '1px',
+			// 	fontSize: '2.5em',
+			// 	padding: '0px 5px',
+			// 	margin: 'auto 5% auto 50%',
+			// 	backgroundColor: 'lightgrey',
+			// 	boxShadow: '0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey',
+			// 	color: 'rgba(150, 150, 150, 0)'
+		 //           	}).text('||')
+   //        	});
 			$('#while-pause').css({
-				zIndex: '-4'
+				zIndex: '-4',
+				visibility: 'hidden'
 			})
 
 		}
@@ -524,12 +577,13 @@ const game = {
 		const dataComment = $whatWasClicked.data().whichComment
 		this.comments[dataComment].revealBully($whatWasClicked)
 		console.log(dataComment)
-
 	}
 
 
 }
+//Initiates game display, then game officially starts from #pause click event.
 game.pauseDisplay(3)
+
 // game.hiddenDivPosition()
 // game.addComment()
 
@@ -568,8 +622,7 @@ $('#pause').on('click', (e) => {
 	// game.pauseGame()
 	if (game.youreFired === false) {
 		const pauseClick = $(e.target)
-		const semantics = 1
-		game.scoreboard(semantics)
+		game.scoreboard(1)
 	} else if (game.youreFired === true) {
 		game.scoreboard('end')
 	}

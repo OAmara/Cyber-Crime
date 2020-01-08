@@ -21,14 +21,11 @@ body {
 	width: 900px;
 	height: 700px;
 	text-align: center;
-	margin: 1px 18%;
+	margin: 0px auto 0px 23%;
 	font-size: 2em;
 	font-weight: 800;
 	/*display: inline-block;*/
 	text-shadow: 2px 2px 5px grey;
-/*	display: flex;
-	align-content: center;
-	justify-content: center;*/
 }
 #stats h5{
 	text-align: left;
@@ -50,19 +47,24 @@ body {
 	z-index: -2;
 	/*try fixed|| try visibility*/
 	position: absolute; 
-	width: 850px;
+	width: 800px;
 	height: 700px;
 	text-align: center;
-	margin: 0px 11%;
+	margin: 0px auto 0px 25%;
 	/*padding: 0px;*/
 	/*font-size: 2em;*/
 	font-weight: 800;
 	/*display: inline-block;*/
-	text-shadow: 2px 2px 5px grey;
+	text-shadow: -0.3px -0.3px 0px lightyellow, -0.6px -0.6px 0px lightyellow, -0.9px -0.9px 0px lightyellow, -1.2px -1.2px 0px black;
+/*	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-content: center;*/
 }
 #while-pause h6{
 	font-size: 1.3em;
-	text-align: left;
+	text-align: center;
 }
 #while-pause h3 {
 	font-size: 1.3em;
@@ -96,11 +98,13 @@ body {
 /*user score displayed on top of main div*/
 .app-users {
 	display: inline;
-	margin: auto 5% auto 20%;
+	margin: auto 5% auto 25%;
+	text-shadow: -0.5px -0.5px 0.5px lightyellow, -1px -1px 0.5px black;
 }
 .user-rating {
 	display: inline;
-	margin: auto 20%  auto 5%;
+	margin: auto 25%  auto 5%;
+	text-shadow: -0.5px -0.5px 0.5px lightyellow, -1px -1px 0.5px black;
 }
 
 /*hidden loop generated div boxes. NOT WORKING; implemented with jQuery */
@@ -177,9 +181,9 @@ body {
 #skill-star-comment-clear {
 	font-size: 3em;
 	padding: 0;
-	border: 1px solid lightgreen;
-	margin: auto 5% auto 20%;
-	background-color: ;
+	border: 1px solid lightyellow;
+	margin: auto 5% auto 25%;
+	background-color: whitesmoke;
 }
 
 #pause {
@@ -191,7 +195,6 @@ body {
 	background-color: lightgrey;
 	box-shadow: 0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey;
 	color: rgba(150, 150, 150, 0);
-
 }
 	#pause:hover {
 	height: 40px;
