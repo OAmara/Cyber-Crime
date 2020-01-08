@@ -1,21 +1,16 @@
 console.log(`--Cyber Crime--`);
 
 // Order/ GOALs:
-	// create multiple hidden divs within main divs (think hw10 or pokasquare)
-	// Create test comment to appendTo random hidden div. within main div.
-	// test clicks
+	// Focus: 
 
 	// NEXT:  
-		// Create game time(currently in startTime(), 
-		// Score system: score decrement based on bully on screen
-		// Be able to create multiple instantiated classes in comments array without hardcoding.
-			// ^ Was not needed
-
 		// Rounds
 			// Each round adds true within truthy array to increase odds of bully comments.
 			// Proper way may be to extend class to change class each round...
 				//...since a Class should never change. 
 			// BONUS+: Each round stores previous round data into array and displays stats before resetting variables. Maybe user want to be able to go back to previous rounds?
+				// This would require .empty() on #main div.
+					//Unless there is a way to save what is attached to a div. Like var. = #main.children()
 
 		// Skills -- look at skill1 to continue
 			// First skill button is to use 2 stars to wipe all good commemnts on screen.
@@ -23,10 +18,11 @@ console.log(`--Cyber Crime--`);
 				// USE EMOJI CODE: \u{1F4AB} or \u{1F320} --> increase font-size w/ CSS.
 
 
+// lines that begin with comment (//) = stretch goal/ future itteration.
 // Class
 class Comment {
 	constructor(bully, string, user) {
-		// bad or good randomly assign. 
+		// bad or good randomly assigned 
 //		// Add/ Remove a True or False in truthy Array to alter odds of getting one over another.
 			// Additional rounds may have more true (bullys) to become progressively harder.
 			// i.e. [true, false, true, true] --> 75% chance it will be true
@@ -52,7 +48,7 @@ class Comment {
 		// Add constructor for creating h2 with class comments. Then this can be accessed with revealBully?
 
 	}
-//	// IN ORDER TO change increments/ decrements per round. if statements can instead call method in game that will determine truthy or falsy. This will be done to then change per round for difficulty setting.
+//	// IN ORDER TO change increments/ decrements per round. if statements can instead call method in game that will determine truthy or falsy. Multiply specific points per round. This will be done to then change per round for difficulty setting.
 	revealBully($whatWasClicked) {
 		// alt. = changing bully color to regular when clicked and regular disappears when clicked.
 
@@ -70,10 +66,11 @@ class Comment {
 				}
 			}
 			game.wrongUsersBanned++
+			this.bully = null
 			game.scoreboard()
 
 
-			console.log("im falsy");
+			console.log("I'm falsy");
 		}
 		if(this.bully === true) {
 			// MAY be better to use .classList or .className , .remove() then .addclass()
@@ -83,42 +80,39 @@ class Comment {
 			if(game.appUserScore > 0) {
 				game.appUserScore+=242
 				// For testing
-				game.appUserScore+= 1000
+				game.appUserScore+= 800
 				game.appUserScore+=Math.ceil(game.appUserScore * 0.064)
 			}
 			game.stars++
 			game.bullyAccountsBanned++
+			// Change value so that for loop logic within scoreboard() prevents point decrement for having bully in comments array
+			// Previously this.bully = false, changed to null to prevent user from dbl-clicking! 
+			this.bully = null
 			game.scoreboard()
 
-			// Turns any clicked bully to false in order to prevent point decrement for having bully on screen.
-			this.bully = false
-
-			// border: 2px solid red;
-
-			console.log(`I was truthy, now I am ${this.bully}`);
+			console.log(`I was truthy, now I'm ${this.bully}`);
 		}
-
-			//i.e. if(this....bully === false) {jQuery change class name to this new class name that
-				// changes color turn comment green}
-				// else {jQuery change class to class that reveals bully === true}
-				// Then slowly hide comment until it is in "space and time" --> not in body. .remove()
-
 	}
 
 }
 
-//// Game
+// lines that begin with comment (//) = stretch goal/ future itteration.
+// Game
 const game = {
 	// Random user reporting comment
-	reportUser: ['Penguin1137', 'DirtyHenry', 'sparkles87'],
+	reportUser: ['Penguin1137', 'DirtyHenry', 'sparkles87', 'HELLokItteN66', 'frenchToast44', 'Anonymous'],
 	// Comments; "bully" = true, "regular" = false --> may not need this.
 	bullyStringGenerator: [
-		"Bad Negative Comment Here",
+		"Bad, Negative Comment Here",
 		"Bad, You Know Nobody likes you",
+		"You are worst than dirt",
+		"A fart would smell better than You."
 		],
 	regularStringGenerator: [
 		"Good day sir, I am a Good Comment",
 		"Good Comment here, nice to meet you",
+		"Oh, how I love pancakes!",
+		"many Hugs and Kisses xoxo"
 		],
 	comments: [],
 	appUserScore: 1000,
@@ -195,7 +189,8 @@ const game = {
 				// Chnage this to document.body logic so that only when it is displayed since currently it will always be inside the comments[]
 //	used-->		// alt.: Better solution may be to change bully to false within revealBully() class method. 
 				if(this.comments[i].bully === true){
-					this.appUserScore -= Math.ceil(this.appUserScore * 0.00488)
+//					// was roughly around 0.00488, changed for presentation purposes.
+					this.appUserScore -= Math.ceil(this.appUserScore * 0.00188)
 					this.scoreboard()
 					this.appUserScore--
 				} else{
@@ -385,8 +380,6 @@ const game = {
 			margin: 'auto'
 		})
 //		// ADD A BUNCH OF CSS, BLURS FILTERS, ..........Main Text/ buttons up front. Layering to come before other content? --> how to do that? --> Maybe even flexbox or position: ;
-	
-	// this.roundStatDisplay()
 
 	},
 	// Displays roundstats with next round button displayed. Blurs background(z-index: -1) html.

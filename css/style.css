@@ -90,7 +90,7 @@ body {
 	margin-bottom: 0;
 }
 .intro-story {
-	font-size: 1.2em;
+	font-size: 1.35em;
 	/*text-align: left;*/
 }
 /*user score displayed on top of main div*/
@@ -166,10 +166,12 @@ body {
 /*changed comment when clicked based on if statement when clicked*/
 .revealedTrue {
 	border: 2px solid red;
+	background-color: rgba(255, 0, 0, 0.01)
 }
 /*changed comment when clicked based on if statement when clicked*/
 .revealedFalse {
 	border: 2px solid lightgreen;
+	background-color: rgba(0, 255, 0, 0.01)
 }
 
 #skill-star-comment-clear {
