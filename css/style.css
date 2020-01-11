@@ -192,7 +192,7 @@ body {
 	width: 1px;
 	font-size: 2.5em;
 	padding: 0px 5px;
-	margin: auto 5% auto 50%;
+	margin: auto 5% auto 30%;
 	background-color: lightgrey;
 	box-shadow: 0px 0px 5px 1px grey, 20px 0px 0px 0px lightgrey, 20px 0px 5px 1px grey;
 	color: rgba(150, 150, 150, 0);
@@ -210,5 +210,11 @@ body {
 
 
 
-
+footer {
+	/*display: block;*/
+	/*margin-left: ;*/
+	/*float: right;*/
+	text-align: center;
+	font-size: 0.5em;
+}
 
