@@ -4,8 +4,8 @@
 
 Original Wireframe & User Stories:
 https://wireframepro.mockflow.com/view/myCyberCrime-initial-planning
-
-[photo]
+coming up:
+            [photo]
             [who]
             [what]
             [why]
