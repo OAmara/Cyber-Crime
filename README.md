@@ -1,8 +1,6 @@
 # Cyber-Crime
-[click here to play:] (https://oamara.github.io/Cyber-Crime/)
+[Click Here To Play:] (https://oamara.github.io/Cyber-Crime/)
 
-            [click here to play:]
-            <https://oamara.github.io/Cyber-Crime/>
 
             --Cyber-Crime--
             
