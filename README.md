@@ -24,3 +24,10 @@ https://wireframepro.mockflow.com/view/myCyberCrime-initial-planning
             [how to play instructions]
             [blocks]
             [future itterations]
+
+
+
+Languages Used:
+
+            ![JavaScript -- JS]
+            (https://i.imgur.com/7d7I3cT.jpg)
