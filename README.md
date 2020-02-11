@@ -29,5 +29,4 @@ https://wireframepro.mockflow.com/view/myCyberCrime-initial-planning
 
 Languages Used:
 
-            ![JavaScript -- JS]
-            (https://i.imgur.com/7d7I3cT.jpg)
+            ![Image JavaScript -- JS](https://i.imgur.com/7d7I3cT.jpg)
